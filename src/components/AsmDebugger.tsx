@@ -46,30 +46,25 @@ const examples = {
 
 .TEXT
 main:
-    ; Initialize registers with values for meaningful arithmetic
     MOV R0, #42
     MOV R1, R0
     MOV R2, #15
 
-    ; Basic arithmetic operations with proper values
-    ADD R0, #10     ; R0 = 42 + 10 = 52
-    SUB R1, #2      ; R1 = 42 - 2 = 40
-    MUL R2, #3      ; R2 = 15 * 3 = 45
-    DIV R0, #2      ; R0 = 52 / 2 = 26
-    INC R1          ; R1 = 40 + 1 = 41
-    DEC R2          ; R2 = 45 - 1 = 44
+    ADD R0, #10
+    SUB R1, #2
+    MUL R2, #3
+    DIV R0, #2
+    INC R1
+    DEC R2
 
-    ; Stack operations
     PUSH R0
     PUSH R1
     POP R3
     POP R4
 
-    ; System calls - print numbers
     MOV R0, #123
     SYS #1
 
-    ; Loop with conditional jumps
     MOV R5, #0
 
 loop_start:
@@ -79,27 +74,22 @@ loop_start:
     CMP R5, #5
     JL loop_start
 
-    ; Function call demonstration
     CALL math_function
 
-    ; Bitwise operations
     MOV R9, #0xFF
     AND R9, #0x0F
     OR R9, #0xF0
     XOR R9, #0xAA
     NOT R9
 
-    ; Shift operations
     MOV R10, #8
     SHL R10, #2
     SHR R10, #1
 
-    ; Memory operations
     MOV R11, #1000
     STORE [1000], R11
     LOAD R12, [1000]
 
-    ; Final system calls
     MOV R0, #0
     SYS #3
     HLT
