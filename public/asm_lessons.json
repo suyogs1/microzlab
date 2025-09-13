@@ -1,0 +1,724 @@
+{
+  "lessons": [
+    {
+      "id": "l01_registers",
+      "title": "Registers & MOV",
+      "goals": ["Use R0-R15 general purpose registers", "Move immediate values", "Move between registers"],
+      "theory": "Registers are the CPU's fastest storage locations. Our assembly language has 16 general-purpose registers (R0-R15) plus special registers (SP, BP, IP). The MOV instruction copies values between registers or loads immediate values using the # prefix. Think of registers as variables that the CPU can access instantly.",
+      "snippets": [
+        {
+          "label": "Hello Registers",
+          "source": "MOV R0, #42\nMOV R1, #100\nMOV R2, R0\nHALT",
+          "watches": ["R0", "R1", "R2"]
+        },
+        {
+          "label": "Register Chain",
+          "source": "MOV R0, #10\nMOV R1, R0\nMOV R2, R1\nMOV R3, R2\nHALT",
+          "watches": ["R0", "R1", "R2", "R3"]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "What does MOV R0, #25 do?",
+          "options": ["Moves R0 to address 25", "Moves 25 to register R0", "Adds 25 to R0", "Compares R0 with 25"],
+          "answer": 1
+        },
+        {
+          "q": "After MOV R1, R0, what happens to R0?",
+          "options": ["R0 becomes 0", "R0 is unchanged", "R0 equals R1", "R0 is deleted"],
+          "answer": 1
+        }
+      ]
+    },
+    {
+      "id": "l02_memory",
+      "title": "LOAD/STORE & Addressing",
+      "goals": ["Load from memory to registers", "Store registers to memory", "Use different addressing modes"],
+      "theory": "Memory operations transfer data between registers and RAM. LOAD copies from memory to register, STORE copies from register to memory. Use square brackets [addr] for memory addresses, and support offsets like [R1+4]. Memory is like a giant array where each location has an address.",
+      "snippets": [
+        {
+          "label": "Basic Memory",
+          "source": "; Store value 123 at address 1000\nMOV R0, #123\nSTORE [1000], R0\n; Load it back\nLOAD R1, [1000]\nHALT",
+          "watches": ["R0", "R1", "[1000]"]
+        },
+        {
+          "label": "Pointer Arithmetic",
+          "source": "; Store array values\nMOV R0, #10\nSTORE [2000], R0\nMOV R0, #20\nSTORE [2004], R0\n; Access using pointer\nMOV R1, #2000\nLOAD R2, [R1]\nLOAD R3, [R1+4]\nHALT",
+          "watches": ["R0", "R1", "R2", "R3", "[2000]", "[2004]"]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "What does LOAD R0, [100] do?",
+          "options": ["Loads 100 into R0", "Loads the value at memory address 100 into R0", "Stores R0 at address 100", "Adds 100 to R0"],
+          "answer": 1
+        },
+        {
+          "q": "How do you access the second element of an array starting at R1?",
+          "options": ["[R1+1]", "[R1+4]", "[R1*2]", "[R1++]"],
+          "answer": 1
+        }
+      ]
+    },
+    {
+      "id": "l03_arithmetic",
+      "title": "ADD/SUB & Flags",
+      "goals": ["Perform arithmetic operations", "Understand CPU flags", "Use flags for conditions"],
+      "theory": "Arithmetic instructions modify registers and set CPU flags. ADD/SUB update Zero Flag (ZF), Negative Flag (NF), Carry Flag (CF), and Overflow Flag (OF). These flags are crucial for conditional operations and loops. Flags tell you about the result: was it zero? negative? did it overflow?",
+      "snippets": [
+        {
+          "label": "Basic Math",
+          "source": "MOV R0, #10\nMOV R1, #5\nADD R0, R1\n; R0 = 15\nSUB R0, #3\n; R0 = 12\nHALT",
+          "watches": ["R0", "R1"]
+        },
+        {
+          "label": "Flag Demo",
+          "source": "MOV R0, #5\nSUB R0, #5\n; ZF should be set (result is zero)\nMOV R1, #1\nSUB R1, #2\n; NF should be set (result is negative)\nHALT",
+          "watches": ["R0", "R1"]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "After SUB R0, R0, which flag is set?",
+          "options": ["Carry Flag", "Zero Flag", "Negative Flag", "Overflow Flag"],
+          "answer": 1
+        },
+        {
+          "q": "What happens to R0 after ADD R0, R1?",
+          "options": ["R0 = R1", "R0 = R0 + R1", "R0 = R1 - R0", "R0 unchanged"],
+          "answer": 1
+        }
+      ]
+    },
+    {
+      "id": "l04_compare_branch",
+      "title": "CMP & Branches",
+      "goals": ["Compare values with CMP", "Use conditional jumps", "Create simple decision logic"],
+      "theory": "CMP compares two values by performing subtraction without storing the result, only setting flags. Conditional jumps (JZ, JNZ, JL, JG, etc.) check these flags to change program flow. Unconditional JMP always jumps. This is how programs make decisions!",
+      "snippets": [
+        {
+          "label": "Simple Branch",
+          "source": "MOV R0, #10\nCMP R0, #5\nJG greater\nMOV R1, #0\nJMP end\ngreater:\nMOV R1, #1\nend:\nHALT",
+          "watches": ["R0", "R1"]
+        },
+        {
+          "label": "Equal Check",
+          "source": "MOV R0, #42\nMOV R1, #42\nCMP R0, R1\nJZ equal\nMOV R2, #0\nJMP done\nequal:\nMOV R2, #1\ndone:\nHALT",
+          "watches": ["R0", "R1", "R2"]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "What does CMP R0, R1 do to R0 and R1?",
+          "options": ["Changes both R0 and R1", "Changes only R0", "Changes only R1", "Changes neither, only sets flags"],
+          "answer": 3
+        },
+        {
+          "q": "When does JZ jump?",
+          "options": ["When Zero Flag is clear", "When Zero Flag is set", "Always", "Never"],
+          "answer": 1
+        }
+      ]
+    },
+    {
+      "id": "l05_loops",
+      "title": "Loops & Counters",
+      "goals": ["Create counting loops", "Use DEC instruction", "Combine CMP with jumps for iteration"],
+      "theory": "Loops repeat code sections using counters and conditional jumps. Initialize a counter, execute loop body, decrement counter, then check if done. The DEC instruction decrements and sets flags, making loop conditions simple. Loops are the foundation of repetitive tasks in programming.",
+      "snippets": [
+        {
+          "label": "Count to 5",
+          "source": "MOV R0, #0\nMOV R1, #5\nloop:\nINC R0\nDEC R1\nJNZ loop\nHALT",
+          "watches": ["R0", "R1"]
+        },
+        {
+          "label": "Sum 1 to N",
+          "source": "MOV R0, #0\nMOV R1, #5\nloop:\nADD R0, R1\nDEC R1\nJNZ loop\nHALT",
+          "watches": ["R0", "R1"]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "What does DEC R0 do besides decrementing?",
+          "options": ["Nothing else", "Sets flags based on result", "Clears all flags", "Jumps to next instruction"],
+          "answer": 1
+        },
+        {
+          "q": "In a counting loop, when do you typically check the counter?",
+          "options": ["Before the loop starts", "After decrementing", "In the middle of loop body", "Never"],
+          "answer": 1
+        }
+      ]
+    },
+    {
+      "id": "l06_stack",
+      "title": "Stack PUSH/POP",
+      "goals": ["Understand stack operations", "Use PUSH and POP", "Manage the stack pointer"],
+      "theory": "The stack is a Last-In-First-Out (LIFO) data structure. PUSH adds values to the top, POP removes them. The Stack Pointer (SP) tracks the current top. Stack grows downward in memory, so PUSH decrements SP, POP increments it. Think of it like a stack of plates - you can only add or remove from the top.",
+      "snippets": [
+        {
+          "label": "Basic Stack",
+          "source": "MOV R0, #10\nMOV R1, #20\nPUSH R0\nPUSH R1\nPOP R2\nPOP R3\nHALT",
+          "watches": ["R0", "R1", "R2", "R3", "SP"]
+        },
+        {
+          "label": "Save & Restore",
+          "source": "MOV R0, #42\nPUSH R0\nMOV R0, #99\n; R0 changed to 99\nPOP R0\n; R0 restored to 42\nHALT",
+          "watches": ["R0", "SP"]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "After PUSH R0, what happens to SP?",
+          "options": ["SP increases", "SP decreases", "SP unchanged", "SP becomes 0"],
+          "answer": 1
+        },
+        {
+          "q": "If you PUSH R0 then PUSH R1, what does POP return first?",
+          "options": ["R0", "R1", "0", "Undefined"],
+          "answer": 1
+        }
+      ]
+    },
+    {
+      "id": "l07_functions",
+      "title": "CALL/RET Functions",
+      "goals": ["Create functions with CALL/RET", "Understand stack frames", "Pass parameters and return values"],
+      "theory": "Functions are reusable code blocks. CALL pushes the return address and jumps to the function. RET pops the return address and jumps back. Use registers or stack for parameters. BP (Base Pointer) helps manage stack frames. Functions let you organize code into reusable pieces.",
+      "snippets": [
+        {
+          "label": "Simple Function",
+          "source": "MOV R0, #5\nCALL double\nHALT\n\ndouble:\nADD R0, R0\nRET",
+          "watches": ["R0", "SP", "BP"]
+        },
+        {
+          "label": "Stack Frame",
+          "source": "MOV R0, #3\nCALL square\nHALT\n\nsquare:\nPUSH BP\nMOV BP, SP\nMUL R0, R0\nMOV SP, BP\nPOP BP\nRET",
+          "watches": ["R0", "SP", "BP"]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "What does CALL instruction do first?",
+          "options": ["Jumps to function", "Pushes return address", "Sets up stack frame", "Clears registers"],
+          "answer": 1
+        },
+        {
+          "q": "What should a function do before RET?",
+          "options": ["Clear all registers", "Restore stack pointer", "Set flags", "Nothing special"],
+          "answer": 1
+        }
+      ]
+    },
+    {
+      "id": "l08_bitwise",
+      "title": "Bitwise Operations",
+      "goals": ["Use AND, OR, XOR operations", "Understand bit manipulation", "Apply masks and shifts"],
+      "theory": "Bitwise operations work on individual bits. AND masks bits (x & mask), OR sets bits (x | mask), XOR toggles bits (x ^ mask). Left shift (SHL) multiplies by 2^n, right shift (SHR) divides by 2^n. These operations are essential for low-level programming and optimization.",
+      "snippets": [
+        {
+          "label": "Bit Manipulation",
+          "source": "MOV R0, #42\n; Check if odd\nMOV R1, R0\nAND R1, #1\n; Multiply by 8 using shift\nMOV R2, R0\nSHL R2, #3\n; Clear lowest bit\nMOV R3, R0\nAND R3, #254\nHALT",
+          "watches": ["R0", "R1", "R2", "R3"]
+        },
+        {
+          "label": "Bit Masks",
+          "source": "MOV R0, #170\n; Set bit 2\nOR R0, #4\n; Toggle bit 1\nXOR R0, #2\n; Check bit 3\nMOV R1, R0\nAND R1, #8\nHALT",
+          "watches": ["R0", "R1"]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "What does x & 1 check?",
+          "options": ["If x is positive", "If x is odd", "If x is zero", "If x is negative"],
+          "answer": 1
+        },
+        {
+          "q": "Left shift by N positions multiplies by?",
+          "options": ["N", "2*N", "2^N", "N^2"],
+          "answer": 2
+        }
+      ]
+    },
+    {
+      "id": "l09_arrays",
+      "title": "Array Processing",
+      "goals": ["Access array elements", "Iterate through arrays", "Implement array algorithms"],
+      "theory": "Arrays store multiple values of the same type consecutively in memory. Calculate element address: base + (index * element_size). For 16-bit values, each element is 2 bytes apart. Use loops to process all elements. Arrays are the foundation of data structures.",
+      "snippets": [
+        {
+          "label": "Array Sum",
+          "source": "; Create array [1, 2, 3, 4, 5] at address 5000\nMOV R0, #1\nSTORE [5000], R0\nMOV R0, #2\nSTORE [5002], R0\nMOV R0, #3\nSTORE [5004], R0\nMOV R0, #4\nSTORE [5006], R0\nMOV R0, #5\nSTORE [5008], R0\n; Sum the array\nMOV R0, #0\n; sum\nMOV R1, #5000\n; pointer\nMOV R2, #5\n; count\nloop:\nCMP R2, #0\nJZ done\nLOAD R3, [R1]\nADD R0, R3\nADD R1, #2\nDEC R2\nJMP loop\ndone:\nHALT",
+          "watches": ["R0", "R1", "R2", "R3", "[5000]", "[5002]"]
+        },
+        {
+          "label": "Find Max",
+          "source": "; Create array [3, 7, 2, 9, 1] at address 6000\nMOV R0, #3\nSTORE [6000], R0\nMOV R0, #7\nSTORE [6002], R0\nMOV R0, #2\nSTORE [6004], R0\nMOV R0, #9\nSTORE [6006], R0\nMOV R0, #1\nSTORE [6008], R0\n; Find maximum\nMOV R0, #6000\nLOAD R1, [R0]\n; max = first element\nMOV R2, #4\n; remaining elements\nloop:\nADD R0, #2\nLOAD R3, [R0]\nCMP R3, R1\nJLE skip\nMOV R1, R3\nskip:\nDEC R2\nJNZ loop\nHALT",
+          "watches": ["R0", "R1", "R2", "R3", "[6000]", "[6006]"]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "If an array starts at address 1000, where is the 3rd element (index 2)?",
+          "options": ["1002", "1004", "1006", "1008"],
+          "answer": 1
+        },
+        {
+          "q": "Why add 2 to move to next array element?",
+          "options": ["Arrays are 2 apart", "Each value is 2 bytes", "It's a rule", "For alignment"],
+          "answer": 1
+        }
+      ]
+    },
+    {
+      "id": "l10_syscalls",
+      "title": "System Calls",
+      "goals": ["Use SYS instruction", "Print integers and strings", "Handle program termination"],
+      "theory": "System calls interface with the operating system. SYS #1 prints R0 as integer, SYS #2 prints string at address in R1, SYS #3 exits with code in R0. These allow programs to produce output and terminate cleanly. System calls are your program's way to talk to the outside world.",
+      "snippets": [
+        {
+          "label": "Print Number",
+          "source": "MOV R0, #42\nSYS #1\n; Print 42\nMOV R0, #0\nSYS #3\n; Exit cleanly\nHALT",
+          "watches": ["R0"]
+        },
+        {
+          "label": "Print String",
+          "source": "; Store \"Hi!\" at address 7000\nMOV R0, #72\n; 'H'\nSTORE [7000], R0\nMOV R0, #105\n; 'i'\nSTORE [7001], R0\nMOV R0, #33\n; '!'\nSTORE [7002], R0\nMOV R0, #0\n; null terminator\nSTORE [7003], R0\n; Print the string\nMOV R1, #7000\nSYS #2\nMOV R0, #0\nSYS #3\nHALT",
+          "watches": ["R0", "R1", "[7000]", "[7001]", "[7002]", "[7003]"]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "What does SYS #1 do?",
+          "options": ["Exits program", "Prints R0 as integer", "Prints string", "Reads input"],
+          "answer": 1
+        },
+        {
+          "q": "Which register holds the string address for SYS #2?",
+          "options": ["R0", "R1", "R2", "SP"],
+          "answer": 1
+        }
+      ]
+    },
+    {
+      "id": "l11_addressing_modes",
+      "title": "Addressing Modes",
+      "goals": ["Master all addressing modes", "Use indexed addressing", "Understand effective address calculation"],
+      "theory": "Addressing modes determine how operands are accessed. Immediate (#value) uses constants, register uses register contents, direct [addr] accesses memory, indirect [reg] uses register as pointer, and indexed [base+offset] combines base address with offset for array access.",
+      "snippets": [
+        {
+          "label": "All Modes Demo",
+          "source": "MOV R0, #100\n; Immediate\nMOV R1, R0\n; Register\nMOV R2, #42\nSTORE [8000], R2\nLOAD R3, [8000]\n; Direct\nMOV R4, #8000\nLOAD R5, [R4]\n; Indirect\nLOAD R6, [8000+4]\n; Indexed\nHALT",
+          "watches": ["R0", "R1", "R2", "R3", "R4", "R5", "R6", "[8000]"]
+        },
+        {
+          "label": "Array Indexing",
+          "source": "; Store array at 9000\nMOV R0, #1\nSTORE [9000], R0\nMOV R0, #2\nSTORE [9002], R0\nMOV R0, #3\nSTORE [9004], R0\n; Access with indexing\nMOV R0, #9000\nMOV R1, #0\nloop:\nLOAD R2, [R0+R1]\nADD R1, #2\nCMP R1, #6\nJL loop\nHALT",
+          "watches": ["R0", "R1", "R2", "[9000]", "[9002]"]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "What does [R1+8] represent?",
+          "options": ["R1 plus 8", "Memory at address R1+8", "8th element after R1", "R1 shifted by 8"],
+          "answer": 1
+        },
+        {
+          "q": "Which addressing mode is fastest?",
+          "options": ["Immediate", "Register", "Direct", "Indirect"],
+          "answer": 1
+        }
+      ]
+    },
+    {
+      "id": "l12_flags_conditionals",
+      "title": "Flags & Conditional Branches",
+      "goals": ["Understand all CPU flags", "Use conditional jumps effectively", "Master flag-based logic"],
+      "theory": "CPU flags indicate operation results: Zero Flag (ZF) set when result is 0, Negative Flag (NF) for negative results, Carry Flag (CF) for unsigned overflow, Overflow Flag (OF) for signed overflow. Conditional jumps test these flags: JZ/JE (zero), JNZ/JNE (not zero), JL/JB (less), JG/JA (greater).",
+      "snippets": [
+        {
+          "label": "Flag Truth Table",
+          "source": "MOV R0, #5\nCMP R0, #5\n; ZF=1, NF=0, CF=0\nMOV R1, #3\nCMP R1, #5\n; ZF=0, NF=1, CF=1\nMOV R2, #7\nCMP R2, #5\n; ZF=0, NF=0, CF=0\nHALT",
+          "watches": ["R0", "R1", "R2"]
+        },
+        {
+          "label": "Conditional Logic",
+          "source": "MOV R0, #10\nMOV R1, #0\nCMP R0, #5\nJLE skip1\nMOV R1, #1\nskip1:\nCMP R0, #15\nJGE skip2\nMOV R1, #2\nskip2:\nHALT",
+          "watches": ["R0", "R1"]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "After CMP R0, R1, when is Zero Flag set?",
+          "options": ["R0 > R1", "R0 < R1", "R0 = R1", "Always"],
+          "answer": 2
+        },
+        {
+          "q": "Which jump checks Carry Flag?",
+          "options": ["JZ", "JC", "JG", "JL"],
+          "answer": 1
+        }
+      ]
+    },
+    {
+      "id": "l13_stack_frames",
+      "title": "Stack Frames (SP/BP)",
+      "goals": ["Create proper stack frames", "Use BP for local variables", "Manage CALL/RET with parameters"],
+      "theory": "Stack frames organize function data. SP (Stack Pointer) tracks stack top, BP (Base Pointer) marks frame start. Standard frame: PUSH BP, MOV BP,SP (setup), local variables at [BP-offset], parameters at [BP+offset], restore with MOV SP,BP; POP BP before RET.",
+      "snippets": [
+        {
+          "label": "Function with Frame",
+          "source": "MOV R0, #10\nMOV R1, #5\nPUSH R1\nPUSH R0\nCALL add_func\nADD SP, #4\nHALT\n\nadd_func:\nPUSH BP\nMOV BP, SP\nLOAD R0, [BP+4]\nLOAD R1, [BP+6]\nADD R0, R1\nMOV SP, BP\nPOP BP\nRET",
+          "watches": ["R0", "R1", "SP", "BP"]
+        },
+        {
+          "label": "Local Variables",
+          "source": "CALL func_with_locals\nHALT\n\nfunc_with_locals:\nPUSH BP\nMOV BP, SP\nSUB SP, #4\n; Local space\nMOV R0, #42\nSTORE [BP-2], R0\nMOV R1, #99\nSTORE [BP-4], R1\nLOAD R2, [BP-2]\nMOV SP, BP\nPOP BP\nRET",
+          "watches": ["R0", "R1", "R2", "SP", "BP"]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "What does PUSH BP; MOV BP, SP do?",
+          "options": ["Saves old frame pointer", "Creates new stack frame", "Both A and B", "Clears the stack"],
+          "answer": 2
+        },
+        {
+          "q": "Where are function parameters typically located?",
+          "options": ["[BP-offset]", "[BP+offset]", "[SP+offset]", "In registers only"],
+          "answer": 1
+        }
+      ]
+    },
+    {
+      "id": "l14_string_operations",
+      "title": "String Operations",
+      "goals": ["Work with null-terminated strings", "Iterate through characters", "Implement string functions"],
+      "theory": "Strings are sequences of bytes ending with null (0). Use LOAD/STORE for byte operations. Increment pointer to move through string. Common operations: length calculation, copying, comparison. Strings are just arrays of characters with a special ending marker.",
+      "snippets": [
+        {
+          "label": "String Length",
+          "source": "; Store string \"Hi\" at address 10000\nMOV R0, #72\n; 'H'\nSTORE [10000], R0\nMOV R0, #105\n; 'i'\nSTORE [10001], R0\nMOV R0, #0\n; null terminator\nSTORE [10002], R0\n; Count length\nMOV R0, #10000\nMOV R1, #0\nloop:\nLOAD R2, [R0]\nCMP R2, #0\nJZ done\nINC R1\nINC R0\nJMP loop\ndone:\nHALT",
+          "watches": ["R0", "R1", "R2", "[10000]", "[10001]", "[10002]"]
+        },
+        {
+          "label": "String Copy",
+          "source": "; Source: \"AB\" at 11000\nMOV R0, #65\nSTORE [11000], R0\nMOV R0, #66\nSTORE [11001], R0\nMOV R0, #0\nSTORE [11002], R0\n; Copy to 12000\nMOV R0, #11000\nMOV R1, #12000\ncopy_loop:\nLOAD R2, [R0]\nSTORE [R1], R2\nCMP R2, #0\nJZ done\nINC R0\nINC R1\nJMP copy_loop\ndone:\nHALT",
+          "watches": ["R0", "R1", "R2", "[11000]", "[12000]"]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "How do you know when a string ends?",
+          "options": ["Fixed length", "Special marker", "Null byte (0)", "Memory boundary"],
+          "answer": 2
+        },
+        {
+          "q": "What is the ASCII value of 'A'?",
+          "options": ["64", "65", "66", "97"],
+          "answer": 1
+        }
+      ]
+    },
+    {
+      "id": "l15_multiplication_division",
+      "title": "Multiplication & Division",
+      "goals": ["Use MUL and DIV instructions", "Handle overflow and division by zero", "Implement efficient algorithms"],
+      "theory": "MUL multiplies two values, DIV divides them. Both operations can cause overflow or underflow. Division by zero causes an error. These operations are slower than addition/subtraction, so sometimes bit shifts or repeated addition/subtraction are used for optimization.",
+      "snippets": [
+        {
+          "label": "Basic Math",
+          "source": "MOV R0, #6\nMOV R1, #7\nMUL R0, R1\n; R0 = 42\nMOV R2, #2\nDIV R0, R2\n; R0 = 21\nHALT",
+          "watches": ["R0", "R1", "R2"]
+        },
+        {
+          "label": "Power of 2",
+          "source": "MOV R0, #5\n; Calculate 5^3 = 125\nMOV R1, R0\nMUL R1, R0\n; R1 = 25\nMUL R1, R0\n; R1 = 125\nHALT",
+          "watches": ["R0", "R1"]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "What happens with DIV R0, #0?",
+          "options": ["R0 becomes 0", "R0 becomes infinity", "Program crashes", "Nothing happens"],
+          "answer": 2
+        },
+        {
+          "q": "Which is faster for multiplying by 8?",
+          "options": ["MUL R0, #8", "SHL R0, #3", "ADD R0, R0 (3 times)", "All same speed"],
+          "answer": 1
+        }
+      ]
+    },
+    {
+      "id": "l16_memory_safety",
+      "title": "Memory Safety & Bounds Checks",
+      "goals": ["Prevent buffer overflows", "Validate array indices", "Handle memory errors gracefully"],
+      "theory": "Memory safety prevents crashes and security issues. Always validate array indices before access. Check string lengths before copying. Use bounds checking: if (index >= 0 && index < length). Initialize memory before use. Never access memory outside allocated regions.",
+      "snippets": [
+        {
+          "label": "Safe Array Access",
+          "source": "; Array bounds check\nMOV R0, #5\n; index to check\nMOV R1, #3\n; array length\nCMP R0, #0\nJL error\nCMP R0, R1\nJGE error\n; Safe access\nMOV R2, #100\n; success\nJMP done\nerror:\nMOV R2, #-1\n; error code\ndone:\nHALT",
+          "watches": ["R0", "R1", "R2"]
+        },
+        {
+          "label": "Safe String Copy",
+          "source": "; Copy with length limit\nMOV R0, #13000\n; source\nMOV R1, #14000\n; dest\nMOV R2, #5\n; max length\nMOV R3, #0\n; counter\ncopy_loop:\nCMP R3, R2\nJGE truncate\nLOAD R4, [R0]\nCMP R4, #0\nJZ null_term\nSTORE [R1], R4\nINC R0\nINC R1\nINC R3\nJMP copy_loop\ntruncate:\nnull_term:\nMOV R4, #0\nSTORE [R1], R4\nHALT",
+          "watches": ["R0", "R1", "R2", "R3", "R4"]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "What should you check before accessing array[i]?",
+          "options": ["i >= 0 only", "i < length only", "Both i >= 0 and i < length", "Nothing needed"],
+          "answer": 2
+        },
+        {
+          "q": "What happens if you access memory outside array bounds?",
+          "options": ["Returns 0", "Undefined behavior", "Automatic bounds checking", "Program continues normally"],
+          "answer": 1
+        }
+      ]
+    },
+    {
+      "id": "l17_recursion",
+      "title": "Recursion & Stack Management",
+      "goals": ["Implement recursive functions", "Manage stack depth", "Handle base cases properly"],
+      "theory": "Recursion is when a function calls itself. Each call creates a new stack frame. Must have a base case to stop recursion. Stack can overflow if recursion is too deep. Recursive solutions are elegant but can be memory-intensive.",
+      "snippets": [
+        {
+          "label": "Factorial Recursion",
+          "source": "MOV R0, #4\nCALL factorial\nHALT\n\nfactorial:\nPUSH BP\nMOV BP, SP\nCMP R0, #1\nJLE base_case\nDEC R0\nCALL factorial\nINC R0\nMUL R0, R0\nJMP return\nbase_case:\nMOV R0, #1\nreturn:\nMOV SP, BP\nPOP BP\nRET",
+          "watches": ["R0", "SP", "BP"]
+        },
+        {
+          "label": "Fibonacci",
+          "source": "MOV R0, #5\nCALL fibonacci\nHALT\n\nfibonacci:\nPUSH BP\nMOV BP, SP\nCMP R0, #2\nJL base_case\nPUSH R0\nDEC R0\nCALL fibonacci\nMOV R1, R0\nPOP R0\nSUB R0, #2\nCALL fibonacci\nADD R0, R1\nJMP return\nbase_case:\nMOV R0, #1\nreturn:\nMOV SP, BP\nPOP BP\nRET",
+          "watches": ["R0", "R1", "SP", "BP"]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "What is essential for any recursive function?",
+          "options": ["Loop counter", "Base case", "Global variable", "Array parameter"],
+          "answer": 1
+        },
+        {
+          "q": "What happens if recursion has no base case?",
+          "options": ["Infinite loop", "Stack overflow", "Program terminates", "Returns 0"],
+          "answer": 1
+        }
+      ]
+    },
+    {
+      "id": "l18_data_structures",
+      "title": "Data Structures",
+      "goals": ["Implement linked lists", "Create simple trees", "Manage dynamic data"],
+      "theory": "Data structures organize data efficiently. Arrays provide constant-time access but fixed size. Linked lists allow dynamic size but sequential access. Trees provide hierarchical organization. Pointers connect data elements together.",
+      "snippets": [
+        {
+          "label": "Linked List Node",
+          "source": "; Node structure: [data][next_ptr]\n; Create first node at 15000\nMOV R0, #42\n; data\nSTORE [15000], R0\nMOV R0, #15004\n; next pointer\nSTORE [15002], R0\n; Create second node at 15004\nMOV R0, #99\n; data\nSTORE [15004], R0\nMOV R0, #0\n; null pointer\nSTORE [15006], R0\n; Traverse list\nMOV R0, #15000\n; start\ntraverse:\nLOAD R1, [R0]\n; get data\nLOAD R0, [R0+2]\n; get next\nCMP R0, #0\nJNZ traverse\nHALT",
+          "watches": ["R0", "R1", "[15000]", "[15002]", "[15004]"]
+        },
+        {
+          "label": "Simple Stack",
+          "source": "; Stack implementation\nMOV R0, #16000\n; stack base\nMOV R1, R0\n; stack top\n; Push 10\nMOV R2, #10\nSTORE [R1], R2\nADD R1, #2\n; Push 20\nMOV R2, #20\nSTORE [R1], R2\nADD R1, #2\n; Pop\nSUB R1, #2\nLOAD R3, [R1]\n; Pop\nSUB R1, #2\nLOAD R4, [R1]\nHALT",
+          "watches": ["R0", "R1", "R2", "R3", "R4", "[16000]", "[16002]"]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "In a linked list node, what does the 'next' field contain?",
+          "options": ["Next data value", "Address of next node", "Index of next node", "Size of next node"],
+          "answer": 1
+        },
+        {
+          "q": "What indicates the end of a linked list?",
+          "options": ["Negative value", "Zero/null pointer", "Maximum address", "Special marker"],
+          "answer": 1
+        }
+      ]
+    },
+    {
+      "id": "l19_sorting_algorithms",
+      "title": "Sorting Algorithms",
+      "goals": ["Implement bubble sort", "Understand selection sort", "Compare algorithm efficiency"],
+      "theory": "Sorting arranges data in order. Bubble sort compares adjacent elements and swaps if needed. Selection sort finds minimum and places it at the beginning. Both are O(n²) but educational. Understanding sorting helps with algorithm analysis.",
+      "snippets": [
+        {
+          "label": "Bubble Sort",
+          "source": "; Array [3,1,4,2] at 17000\nMOV R0, #3\nSTORE [17000], R0\nMOV R0, #1\nSTORE [17002], R0\nMOV R0, #4\nSTORE [17004], R0\nMOV R0, #2\nSTORE [17006], R0\n; Bubble sort\nMOV R0, #4\n; length\nouter:\nMOV R1, #17000\n; array start\nMOV R2, R0\n; inner counter\nDEC R2\ninner:\nLOAD R3, [R1]\nLOAD R4, [R1+2]\nCMP R3, R4\nJLE no_swap\n; Swap\nSTORE [R1], R4\nSTORE [R1+2], R3\nno_swap:\nADD R1, #2\nDEC R2\nJNZ inner\nDEC R0\nJNZ outer\nHALT",
+          "watches": ["R0", "R1", "R2", "R3", "R4", "[17000]", "[17002]"]
+        },
+        {
+          "label": "Find Minimum",
+          "source": "; Find min in [5,2,8,1]\nMOV R0, #5\nSTORE [18000], R0\nMOV R0, #2\nSTORE [18002], R0\nMOV R0, #8\nSTORE [18004], R0\nMOV R0, #1\nSTORE [18006], R0\n; Find minimum\nMOV R0, #18000\n; start\nLOAD R1, [R0]\n; min value\nMOV R2, R0\n; min index\nMOV R3, #3\n; remaining\nfind_min:\nADD R0, #2\nLOAD R4, [R0]\nCMP R4, R1\nJGE skip\nMOV R1, R4\nMOV R2, R0\nskip:\nDEC R3\nJNZ find_min\nHALT",
+          "watches": ["R0", "R1", "R2", "R3", "R4", "[18000]", "[18006]"]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "In bubble sort, what happens in each pass?",
+          "options": ["One element is sorted", "Largest element bubbles to end", "Array is reversed", "Minimum is found"],
+          "answer": 1
+        },
+        {
+          "q": "What is the time complexity of bubble sort?",
+          "options": ["O(n)", "O(n log n)", "O(n²)", "O(2^n)"],
+          "answer": 2
+        }
+      ]
+    },
+    {
+      "id": "l20_search_algorithms",
+      "title": "Search Algorithms",
+      "goals": ["Implement linear search", "Understand binary search", "Compare search efficiency"],
+      "theory": "Search algorithms find elements in data. Linear search checks each element sequentially - O(n) time. Binary search works on sorted data by dividing search space in half - O(log n) time. Choice depends on data organization and search frequency.",
+      "snippets": [
+        {
+          "label": "Linear Search",
+          "source": "; Search for 7 in [2,5,7,9,1]\nMOV R0, #2\nSTORE [19000], R0\nMOV R0, #5\nSTORE [19002], R0\nMOV R0, #7\nSTORE [19004], R0\nMOV R0, #9\nSTORE [19006], R0\nMOV R0, #1\nSTORE [19008], R0\n; Linear search for 7\nMOV R0, #19000\n; start\nMOV R1, #7\n; target\nMOV R2, #5\n; count\nMOV R3, #0\n; index\nsearch:\nLOAD R4, [R0]\nCMP R4, R1\nJZ found\nADD R0, #2\nINC R3\nDEC R2\nJNZ search\nMOV R3, #-1\n; not found\nfound:\nHALT",
+          "watches": ["R0", "R1", "R2", "R3", "R4", "[19004]"]
+        },
+        {
+          "label": "Binary Search",
+          "source": "; Search in sorted [1,3,5,7,9]\nMOV R0, #1\nSTORE [20000], R0\nMOV R0, #3\nSTORE [20002], R0\nMOV R0, #5\nSTORE [20004], R0\nMOV R0, #7\nSTORE [20006], R0\nMOV R0, #9\nSTORE [20008], R0\n; Binary search for 5\nMOV R0, #0\n; left\nMOV R1, #4\n; right\nMOV R2, #5\n; target\nbinary_search:\nCMP R0, R1\nJG not_found\nMOV R3, R0\nADD R3, R1\nSHR R3, #1\n; mid = (left+right)/2\nMOV R4, R3\nMUL R4, #2\nADD R4, #20000\nLOAD R5, [R4]\nCMP R5, R2\nJZ found\nJL search_right\nMOV R1, R3\nDEC R1\nJMP binary_search\nsearch_right:\nMOV R0, R3\nINC R0\nJMP binary_search\nnot_found:\nMOV R3, #-1\nfound:\nHALT",
+          "watches": ["R0", "R1", "R2", "R3", "R4", "R5", "[20004]"]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "When can you use binary search?",
+          "options": ["On any array", "Only on sorted arrays", "Only on small arrays", "Only on numeric arrays"],
+          "answer": 1
+        },
+        {
+          "q": "What is the time complexity of binary search?",
+          "options": ["O(1)", "O(log n)", "O(n)", "O(n²)"],
+          "answer": 1
+        }
+      ]
+    },
+    {
+      "id": "l21_optimization",
+      "title": "Code Optimization",
+      "goals": ["Optimize for speed", "Reduce memory usage", "Use efficient algorithms"],
+      "theory": "Optimization improves program performance. Use registers instead of memory when possible. Replace expensive operations (MUL/DIV) with shifts when appropriate. Minimize memory accesses. Unroll small loops. Choose efficient algorithms and data structures.",
+      "snippets": [
+        {
+          "label": "Loop Unrolling",
+          "source": "; Sum array - unrolled loop\nMOV R0, #1\nSTORE [21000], R0\nMOV R0, #2\nSTORE [21002], R0\nMOV R0, #3\nSTORE [21004], R0\nMOV R0, #4\nSTORE [21006], R0\n; Unrolled sum (4 elements)\nMOV R0, #0\n; sum\nLOAD R1, [21000]\nADD R0, R1\nLOAD R1, [21002]\nADD R0, R1\nLOAD R1, [21004]\nADD R0, R1\nLOAD R1, [21006]\nADD R0, R1\nHALT",
+          "watches": ["R0", "R1", "[21000]", "[21002]"]
+        },
+        {
+          "label": "Bit Tricks",
+          "source": "; Fast operations using bits\nMOV R0, #15\n; Check if power of 2\nMOV R1, R0\nDEC R1\nAND R1, R0\n; R1=0 if power of 2\n; Fast multiply by 10: x*10 = x*8 + x*2\nMOV R2, #7\nMOV R3, R2\nSHL R3, #3\n; x*8\nMOV R4, R2\nSHL R4, #1\n; x*2\nADD R3, R4\n; x*10\nHALT",
+          "watches": ["R0", "R1", "R2", "R3", "R4"]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "Which is faster for multiplying by 16?",
+          "options": ["MUL R0, #16", "SHL R0, #4", "ADD R0, R0 (4 times)", "All same speed"],
+          "answer": 1
+        },
+        {
+          "q": "What does loop unrolling do?",
+          "options": ["Makes loops shorter", "Reduces loop overhead", "Uses more memory", "Makes code harder to read"],
+          "answer": 1
+        }
+      ]
+    },
+    {
+      "id": "l22_error_handling",
+      "title": "Error Handling",
+      "goals": ["Detect runtime errors", "Handle edge cases", "Implement graceful failure"],
+      "theory": "Error handling prevents crashes and provides meaningful feedback. Check for division by zero, array bounds, null pointers, and stack overflow. Use error codes or flags to indicate problems. Always validate input and handle unexpected conditions gracefully.",
+      "snippets": [
+        {
+          "label": "Division Safety",
+          "source": "; Safe division function\nMOV R0, #10\n; dividend\nMOV R1, #0\n; divisor (will cause error)\nCALL safe_divide\nHALT\n\nsafe_divide:\nCMP R1, #0\nJZ div_error\nDIV R0, R1\nMOV R2, #0\n; success code\nRET\ndiv_error:\nMOV R0, #0\n; result = 0\nMOV R2, #-1\n; error code\nRET",
+          "watches": ["R0", "R1", "R2"]
+        },
+        {
+          "label": "Array Bounds Check",
+          "source": "; Safe array access\nMOV R0, #5\n; index\nMOV R1, #3\n; array size\nCALL safe_access\nHALT\n\nsafe_access:\nCMP R0, #0\nJL bounds_error\nCMP R0, R1\nJGE bounds_error\n; Safe access here\nMOV R2, #0\n; success\nRET\nbounds_error:\nMOV R2, #-2\n; bounds error\nRET",
+          "watches": ["R0", "R1", "R2"]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "What should you do before dividing by a value?",
+          "options": ["Nothing special", "Check if it's zero", "Make it positive", "Round it"],
+          "answer": 1
+        },
+        {
+          "q": "What is a good way to indicate errors?",
+          "options": ["Crash the program", "Return error codes", "Ignore them", "Print messages"],
+          "answer": 1
+        }
+      ]
+    },
+    {
+      "id": "l23_performance_analysis",
+      "title": "Performance Analysis",
+      "goals": ["Measure execution time", "Count instructions", "Analyze complexity"],
+      "theory": "Performance analysis helps optimize programs. Count instructions to measure complexity. Time-critical sections identify bottlenecks. Big-O notation describes algorithmic complexity. Profile real execution to find optimization opportunities.",
+      "snippets": [
+        {
+          "label": "Instruction Counter",
+          "source": "; Count instructions in loop\nMOV R0, #0\n; instruction counter\nMOV R1, #5\n; loop counter\nloop:\nINC R0\n; count this instruction\nINC R0\n; count this instruction\nDEC R1\n; count this instruction\nINC R0\n; count this instruction\nJNZ loop\n; count this instruction\nINC R0\n; Final count in R0\nHALT",
+          "watches": ["R0", "R1"]
+        },
+        {
+          "label": "Algorithm Comparison",
+          "source": "; Compare linear vs binary search steps\n; Linear search simulation\nMOV R0, #0\n; steps counter\nMOV R1, #8\n; array size\nMOV R2, #7\n; target (worst case)\nlinear_sim:\nINC R0\nDEC R1\nJNZ linear_sim\n; R0 has linear search steps\n; Binary search simulation\nMOV R1, #0\n; steps counter\nMOV R2, #8\n; array size\nbinary_sim:\nINC R1\nSHR R2, #1\nJNZ binary_sim\n; R1 has binary search steps\nHALT",
+          "watches": ["R0", "R1", "R2"]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "What does Big-O notation describe?",
+          "options": ["Exact runtime", "Memory usage", "Algorithmic complexity", "Code size"],
+          "answer": 2
+        },
+        {
+          "q": "Which grows faster as n increases?",
+          "options": ["O(log n)", "O(n)", "O(n²)", "All same"],
+          "answer": 2
+        }
+      ]
+    },
+    {
+      "id": "l24_advanced_topics",
+      "title": "Advanced Assembly Topics",
+      "goals": ["Understand interrupts", "Learn about caching", "Explore parallel processing"],
+      "theory": "Advanced topics extend basic assembly knowledge. Interrupts handle external events. Caching improves memory access speed. Parallel processing uses multiple cores. Understanding these concepts helps write efficient system-level code.",
+      "snippets": [
+        {
+          "label": "Interrupt Simulation",
+          "source": "; Simulate interrupt handling\nMOV R0, #1\n; interrupt flag\nMOV R1, #100\n; main counter\nmain_loop:\nCMP R0, #1\nJZ handle_interrupt\nDEC R1\nJNZ main_loop\nJMP end\nhandle_interrupt:\nPUSH R1\n; save state\nMOV R2, #42\n; interrupt service\nPOP R1\n; restore state\nMOV R0, #0\n; clear flag\nJMP main_loop\nend:\nHALT",
+          "watches": ["R0", "R1", "R2", "SP"]
+        },
+        {
+          "label": "Cache Simulation",
+          "source": "; Simulate cache behavior\nMOV R0, #0\n; cache hits\nMOV R1, #0\n; cache misses\nMOV R2, #22000\n; last accessed\nMOV R3, #22000\n; current access\n; Sequential access (cache friendly)\nMOV R4, #5\nseq_loop:\nCMP R3, R2\nJNE cache_miss\nINC R0\n; cache hit\nJMP next\ncache_miss:\nINC R1\n; cache miss\nMOV R2, R3\n; update last\nnext:\nADD R3, #2\nDEC R4\nJNZ seq_loop\nHALT",
+          "watches": ["R0", "R1", "R2", "R3", "R4"]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "What is an interrupt?",
+          "options": ["A bug in code", "An external event signal", "A loop termination", "A memory error"],
+          "answer": 1
+        },
+        {
+          "q": "Why is cache important?",
+          "options": ["Saves disk space", "Speeds up memory access", "Prevents errors", "Reduces power usage"],
+          "answer": 1
+        }
+      ]
+    }
+  ]
+}

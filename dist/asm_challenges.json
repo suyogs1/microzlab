@@ -1,0 +1,937 @@
+{
+  "metadata": {
+    "version": "2.0",
+    "title": "MicroZ Assembly Challenges - Spectacular Edition",
+    "description": "24 mind-blowing coding challenges with advanced grading, visualizations, and magical features",
+    "totalChallenges": 24,
+    "difficultyLevels": ["Beginner", "Intermediate", "Advanced", "Expert"],
+    "features": ["Auto-grading", "Debugger Integration", "Algorithm Visualization", "Interactive Testing", "Badge System"]
+  },
+  
+  "gradingCriteria": {
+    "correctness": { "weight": 60, "description": "Solution produces correct output" },
+    "efficiency": { "weight": 20, "description": "Optimal time/space complexity" },
+    "codeStyle": { "weight": 20, "description": "Clean, readable, well-commented code" }
+  },
+  
+  "badges": {
+    "speedster": { "name": "Speed Demon", "description": "Solve 5 challenges in under 2 minutes each", "icon": "⚡" },
+    "perfectionist": { "name": "Perfectionist", "description": "Get 100% score on 10 challenges", "icon": "💎" },
+    "streak": { "name": "Hot Streak", "description": "Solve 5 challenges in a row without errors", "icon": "🔥" },
+    "optimizer": { "name": "Code Optimizer", "description": "Beat efficiency benchmarks on 8 challenges", "icon": "🚀" },
+    "debugger": { "name": "Debug Master", "description": "Use debugger features in 15 challenges", "icon": "🔍" },
+    "explorer": { "name": "Algorithm Explorer", "description": "Complete all visualization challenges", "icon": "🗺️" },
+    "champion": { "name": "Assembly Champion", "description": "Complete all 24 challenges with 90%+ average", "icon": "👑" }
+  },
+
+  "beginner": [
+
+    {
+      "id": "basic_arithmetic",
+      "title": "🧮 Calculator Basics",
+      "difficulty": "Beginner", 
+      "category": "Arithmetic",
+      "prompt": "Build a simple calculator! Add two numbers (15 + 27) and store the result. Then multiply by 2.",
+      "realWorldContext": "Like building the core of a calculator app - every computation starts with basic arithmetic!",
+      "starter": "; Let's do some math!\n; Calculate: (15 + 27) * 2 = 84\n\nMOV R0, #15    ; First number\nMOV R1, #27    ; Second number\n\n; Your calculation here\n\nHALT",
+      "watches": ["R0", "R1", "R2"],
+      "maxSteps": 20,
+      "visualization": "arithmetic_steps",
+      "asserts": [
+        {
+          "type": "register",
+          "register": "R2",
+          "value": 84,
+          "description": "R2 should contain final result (15+27)*2 = 84"
+        }
+      ],
+      "hints": [
+        "First add R0 and R1, store in R2",
+        "Then multiply R2 by 2",
+        "Use ADD R2, R0 then ADD R2, R1, then MUL R2, #2"
+      ]
+    },
+    {
+      "id": "memory_magic",
+      "title": "🎭 Memory Magic Trick",
+      "difficulty": "Beginner",
+      "category": "Memory Operations", 
+      "prompt": "Perform a magic trick! Store the number 42 at memory address 1000, then make it 'disappear' by loading it into R0 and clearing the memory.",
+      "realWorldContext": "Like how variables work in high-level languages - storing and retrieving data from memory!",
+      "starter": "; The Great Memory Magic Trick!\n; Store 42 at address 1000, then retrieve it\n\n; Your magic here\n\nHALT",
+      "watches": ["R0", "[1000]"],
+      "maxSteps": 30,
+      "visualization": "memory_operations",
+      "asserts": [
+        {
+          "type": "register",
+          "register": "R0", 
+          "value": 42,
+          "description": "R0 should contain the retrieved value (42)"
+        },
+        {
+          "type": "memory",
+          "address": 1000,
+          "value": 0,
+          "description": "Memory at 1000 should be cleared (0)"
+        }
+      ],
+      "hints": [
+        "Use MOV R0, #42 then STORE [1000], R0",
+        "Then LOAD R0, [1000] to retrieve",
+        "Finally STORE [1000], #0 to clear"
+      ]
+    },
+    {
+      "id": "loop_counter",
+      "title": "🔄 Countdown Timer",
+      "difficulty": "Beginner",
+      "category": "Control Flow",
+      "prompt": "Create a countdown timer! Start from 10 and count down to 0, storing each number in memory as you go.",
+      "realWorldContext": "Like the countdown in a rocket launch or microwave timer - loops are everywhere!",
+      "starter": "; Houston, we have a countdown!\n; Count from 10 down to 0\n\nMOV R0, #10    ; Start countdown\nMOV R1, #2000  ; Memory pointer\n\n; Your countdown loop here\n\nHALT",
+      "watches": ["R0", "R1", "[2000]", "[2002]"],
+      "maxSteps": 100,
+      "visualization": "loop_animation",
+      "asserts": [
+        {
+          "type": "register",
+          "register": "R0",
+          "value": 0,
+          "description": "R0 should reach 0 (countdown complete)"
+        },
+        {
+          "type": "memory",
+          "address": 2000,
+          "value": 10,
+          "description": "First stored value should be 10"
+        },
+        {
+          "type": "memory", 
+          "address": 2020,
+          "value": 0,
+          "description": "Last stored value should be 0"
+        }
+      ],
+      "hints": [
+        "Use a loop with STORE [R1], R0 to save each number",
+        "Increment R1 by 2 each time (ADD R1, #2)",
+        "Decrement R0 and check if zero with DEC R0, JNZ"
+      ]
+    },
+    {
+      "id": "decision_maker",
+      "title": "🤔 The Decision Maker",
+      "difficulty": "Beginner",
+      "category": "Conditional Logic",
+      "prompt": "Build a decision maker! Compare two numbers (25 and 18) and store 1 in R2 if the first is larger, 0 if equal, -1 if smaller.",
+      "realWorldContext": "Like an if-else statement in any programming language - the foundation of all decision making!",
+      "starter": "; The Great Decision Maker!\n; Compare 25 and 18, make a decision\n\nMOV R0, #25    ; First number\nMOV R1, #18    ; Second number\nMOV R2, #0     ; Result\n\n; Your decision logic here\n\nHALT",
+      "watches": ["R0", "R1", "R2"],
+      "maxSteps": 25,
+      "visualization": "conditional_flow",
+      "asserts": [
+        {
+          "type": "register",
+          "register": "R2",
+          "value": 1,
+          "description": "R2 should be 1 since 25 > 18"
+        }
+      ],
+      "hints": [
+        "Use CMP R0, R1 to compare the numbers",
+        "Use JG (jump if greater) to handle R0 > R1",
+        "Use JE (jump if equal) and JL (jump if less) for other cases"
+      ]
+    },
+    {
+      "id": "stack_juggler",
+      "title": "🤹 The Stack Juggler",
+      "difficulty": "Beginner",
+      "category": "Stack Operations",
+      "prompt": "Become a stack juggling master! Push the numbers 7, 14, 21 onto the stack, then pop them in reverse order into R0, R1, R2.",
+      "realWorldContext": "Like the undo feature in your favorite app - stacks are everywhere in computing!",
+      "starter": "; Welcome to the Stack Circus!\n; Push 7, 14, 21 then pop them back\n\n; Your juggling act here\n\nHALT",
+      "watches": ["R0", "R1", "R2", "SP"],
+      "maxSteps": 40,
+      "visualization": "stack_animation",
+      "asserts": [
+        {
+          "type": "register",
+          "register": "R0",
+          "value": 21,
+          "description": "R0 should contain last pushed value (21)"
+        },
+        {
+          "type": "register", 
+          "register": "R1",
+          "value": 14,
+          "description": "R1 should contain middle value (14)"
+        },
+        {
+          "type": "register",
+          "register": "R2", 
+          "value": 7,
+          "description": "R2 should contain first pushed value (7)"
+        }
+      ],
+      "hints": [
+        "PUSH values in order: 7, 14, 21",
+        "POP in reverse order: R0 gets 21, R1 gets 14, R2 gets 7",
+        "Remember: Last In, First Out (LIFO)!"
+      ]
+    },
+    {
+      "id": "pattern_painter",
+      "title": "🎨 Pattern Painter",
+      "difficulty": "Beginner",
+      "category": "Arrays & Patterns",
+      "prompt": "Create digital art! Fill memory locations 3000-3010 with the pattern: 1, 4, 9, 16, 25, 36 (perfect squares).",
+      "realWorldContext": "Like generating pixel patterns for graphics or creating mathematical sequences in data science!",
+      "starter": "; Welcome to Digital Art Class!\n; Paint perfect squares: 1, 4, 9, 16, 25, 36\n\nMOV R0, #1     ; Current number\nMOV R1, #3000  ; Memory canvas\nMOV R2, #6     ; Count of squares\n\n; Your artistic algorithm here\n\nHALT",
+      "watches": ["R0", "R1", "R2", "[3000]", "[3002]", "[3004]"],
+      "maxSteps": 80,
+      "visualization": "pattern_generation",
+      "asserts": [
+        {
+          "type": "memory",
+          "address": 3000,
+          "value": 1,
+          "description": "First square: 1² = 1"
+        },
+        {
+          "type": "memory",
+          "address": 3002,
+          "value": 4,
+          "description": "Second square: 2² = 4"
+        },
+        {
+          "type": "memory",
+          "address": 3004,
+          "value": 9,
+          "description": "Third square: 3² = 9"
+        },
+        {
+          "type": "memory",
+          "address": 3010,
+          "value": 36,
+          "description": "Sixth square: 6² = 36"
+        }
+      ],
+      "hints": [
+        "Use MUL R0, R0 to square the current number",
+        "Store result, then increment R0 and R1",
+        "Loop until you've painted all 6 squares"
+      ]
+    },
+    {
+      "id": "text_encoder",
+      "title": "🔤 Secret Message Encoder",
+      "difficulty": "Beginner",
+      "category": "String Processing",
+      "prompt": "Become a secret agent! Encode the word 'CODE' by shifting each letter by 3 positions (Caesar cipher). Store the encoded result in memory.",
+      "realWorldContext": "Like the encryption used in messaging apps - protecting data with simple transformations!",
+      "starter": "; Agent 007's Secret Mission!\n; Encode 'CODE' with Caesar cipher (shift +3)\n; C->F, O->R, D->G, E->H\n\n; Store original 'CODE' first\nMOV R0, #67    ; 'C'\nSTORE [4000], R0\nMOV R0, #79    ; 'O' \nSTORE [4001], R0\nMOV R0, #68    ; 'D'\nSTORE [4002], R0\nMOV R0, #69    ; 'E'\nSTORE [4003], R0\n\n; Your encoding mission here\n\nHALT",
+      "watches": ["R0", "R1", "[4000]", "[4100]", "[4101]"],
+      "maxSteps": 60,
+      "visualization": "text_transformation",
+      "asserts": [
+        {
+          "type": "memory",
+          "address": 4100,
+          "value": 70,
+          "description": "Encoded 'C' should be 'F' (ASCII 70)"
+        },
+        {
+          "type": "memory",
+          "address": 4101,
+          "value": 82,
+          "description": "Encoded 'O' should be 'R' (ASCII 82)"
+        },
+        {
+          "type": "memory",
+          "address": 4102,
+          "value": 71,
+          "description": "Encoded 'D' should be 'G' (ASCII 71)"
+        },
+        {
+          "type": "memory",
+          "address": 4103,
+          "value": 72,
+          "description": "Encoded 'E' should be 'H' (ASCII 72)"
+        }
+      ],
+      "hints": [
+        "Load each character, add 3 to shift it",
+        "Store the encoded character at address 4100+",
+        "Use a loop to process all 4 characters"
+      ]
+    }
+  ],
+  "intermediate": [
+    {
+      "id": "array_summoner",
+      "title": "🔮 Array Summoner",
+      "difficulty": "Intermediate",
+      "category": "Array Processing",
+      "prompt": "Summon the power of arrays! Calculate the sum of the magical array [3, 7, 11, 15, 19] and store the total energy in R0.",
+      "realWorldContext": "Like calculating total sales, averaging grades, or processing sensor data - array operations are fundamental!",
+      "starter": "; The Ancient Array Summoning Ritual!\n; Array: [3, 7, 11, 15, 19] = 55 total energy\n\n; Store the magical array\nMOV R1, #3\nSTORE [5000], R1\nMOV R1, #7\nSTORE [5002], R1\nMOV R1, #11\nSTORE [5004], R1\nMOV R1, #15\nSTORE [5006], R1\nMOV R1, #19\nSTORE [5008], R1\n\n; Your summoning spell here\nMOV R0, #0     ; Total energy\nMOV R1, #5000  ; Array pointer\nMOV R2, #5     ; Element count\n\nHALT",
+      "watches": ["R0", "R1", "R2", "[5000]", "[5002]"],
+      "maxSteps": 50,
+      "visualization": "array_traversal",
+      "asserts": [
+        {
+          "type": "register",
+          "register": "R0",
+          "value": 55,
+          "description": "R0 should contain total sum (3+7+11+15+19=55)"
+        }
+      ],
+      "hints": [
+        "Use a loop to traverse the array",
+        "LOAD each element and ADD to R0",
+        "Increment pointer by 2, decrement counter"
+      ]
+    },
+    {
+      "id": "treasure_hunter",
+      "title": "💎 Treasure Hunter",
+      "difficulty": "Intermediate",
+      "category": "Search Algorithms",
+      "prompt": "Find the greatest treasure! Search through the treasure chest [12, 45, 23, 67, 34, 89, 56] and find the most valuable item.",
+      "realWorldContext": "Like finding the highest score in a game, the most expensive item in a store, or the peak value in data analysis!",
+      "starter": "; The Great Treasure Hunt!\n; Chest contains: [12, 45, 23, 67, 34, 89, 56]\n; Find the most valuable treasure (89)\n\n; Fill the treasure chest\nMOV R1, #12\nSTORE [6000], R1\nMOV R1, #45\nSTORE [6002], R1\nMOV R1, #23\nSTORE [6004], R1\nMOV R1, #67\nSTORE [6006], R1\nMOV R1, #34\nSTORE [6008], R1\nMOV R1, #89\nSTORE [6010], R1\nMOV R1, #56\nSTORE [6012], R1\n\n; Your treasure hunting algorithm here\nMOV R1, #6000  ; Chest pointer\nLOAD R0, [R1]  ; Current max treasure\nMOV R2, #6     ; Remaining treasures\n\nHALT",
+      "watches": ["R0", "R1", "R2", "[6000]", "[6010]"],
+      "maxSteps": 80,
+      "visualization": "search_algorithm",
+      "asserts": [
+        {
+          "type": "register",
+          "register": "R0",
+          "value": 89,
+          "description": "R0 should contain the greatest treasure (89)"
+        }
+      ],
+      "hints": [
+        "Start with first treasure as current max",
+        "Compare each treasure with current max",
+        "Update max if you find a greater treasure"
+      ]
+    },
+    {
+      "id": "factorial_wizard",
+      "title": "🧙‍♂️ Factorial Wizard",
+      "difficulty": "Intermediate",
+      "category": "Mathematical Algorithms",
+      "prompt": "Cast the factorial spell! Calculate 6! (6 factorial = 6×5×4×3×2×1 = 720) using the ancient multiplication ritual. Note: Our 16-bit registers can handle up to 7! before overflow.",
+      "realWorldContext": "Like calculating permutations for passwords, combinations in statistics, or growth rates in mathematics!",
+      "starter": "; The Ancient Factorial Spell!\n; Calculate 6! = 6×5×4×3×2×1 = 720\n\nMOV R0, #1  ; Magic accumulator\nMOV R1, #6  ; Starting number\n\n; Your factorial incantation here\n\nHALT",
+      "watches": ["R0", "R1"],
+      "maxSteps": 40,
+      "visualization": "factorial_calculation",
+      "asserts": [
+        {
+          "type": "register",
+          "register": "R0",
+          "value": 720,
+          "description": "R0 should contain 6! = 720"
+        }
+      ],
+      "hints": [
+        "Multiply R0 by R1, then decrement R1",
+        "Continue until R1 reaches 1",
+        "Use MUL R0, R1 then DEC R1"
+      ]
+    },
+    {
+      "id": "string_detective",
+      "title": "🕵️ String Detective",
+      "difficulty": "Intermediate",
+      "category": "String Processing",
+      "prompt": "Solve the mystery! Count the characters in the secret message 'MYSTERY' (7 characters) by detecting the null terminator.",
+      "realWorldContext": "Like strlen() in C, length property in JavaScript, or len() in Python - fundamental string operations!",
+      "starter": "; The Case of the Secret Message!\n; Message: 'MYSTERY' (7 characters)\n\n; Store the secret message\nMOV R1, #77   ; 'M'\nSTORE [7000], R1\nMOV R1, #89   ; 'Y'\nSTORE [7001], R1\nMOV R1, #83   ; 'S'\nSTORE [7002], R1\nMOV R1, #84   ; 'T'\nSTORE [7003], R1\nMOV R1, #69   ; 'E'\nSTORE [7004], R1\nMOV R1, #82   ; 'R'\nSTORE [7005], R1\nMOV R1, #89   ; 'Y'\nSTORE [7006], R1\nMOV R1, #0    ; null terminator\nSTORE [7007], R1\n\n; Your detective work here\nMOV R0, #0    ; Character count\nMOV R1, #7000 ; String pointer\n\nHALT",
+      "watches": ["R0", "R1", "[7000]", "[7007]"],
+      "maxSteps": 60,
+      "visualization": "string_traversal",
+      "asserts": [
+        {
+          "type": "register",
+          "register": "R0",
+          "value": 7,
+          "description": "R0 should contain string length (7)"
+        }
+      ],
+      "hints": [
+        "Loop through each character until you find 0",
+        "Increment counter for each non-zero character",
+        "Use LOAD to check each character"
+      ]
+    },
+    {
+      "id": "bubble_master",
+      "title": "🫧 Bubble Sort Master",
+      "difficulty": "Intermediate",
+      "category": "Sorting Algorithms",
+      "prompt": "Master the ancient bubble technique! Sort the chaotic array [8, 3, 5, 1, 9, 2] into perfect harmony using bubble sort.",
+      "realWorldContext": "Like organizing files by date, sorting search results, or arranging leaderboards - sorting is everywhere!",
+      "starter": "; The Great Bubble Sort Challenge!\n; Chaos: [8, 3, 5, 1, 9, 2] → Order: [1, 2, 3, 5, 8, 9]\n\n; Store the chaotic array\nMOV R0, #8\nSTORE [8000], R0\nMOV R0, #3\nSTORE [8002], R0\nMOV R0, #5\nSTORE [8004], R0\nMOV R0, #1\nSTORE [8006], R0\nMOV R0, #9\nSTORE [8008], R0\nMOV R0, #2\nSTORE [8010], R0\n\n; Your bubble mastery here\n; Array size: 6 elements\n\nHALT",
+      "watches": ["R0", "R1", "R2", "[8000]", "[8002]", "[8004]", "[8010]"],
+      "maxSteps": 200,
+      "visualization": "bubble_sort_animation",
+      "asserts": [
+        {
+          "type": "memory",
+          "address": 8000,
+          "value": 1,
+          "description": "First element should be 1"
+        },
+        {
+          "type": "memory",
+          "address": 8002,
+          "value": 2,
+          "description": "Second element should be 2"
+        },
+        {
+          "type": "memory",
+          "address": 8004,
+          "value": 3,
+          "description": "Third element should be 3"
+        },
+        {
+          "type": "memory",
+          "address": 8010,
+          "value": 9,
+          "description": "Last element should be 9"
+        }
+      ],
+      "hints": [
+        "Use nested loops: outer for passes, inner for comparisons",
+        "Compare adjacent elements and swap if left > right",
+        "Continue until a full pass with no swaps"
+      ]
+    },
+    {
+      "id": "binary_search_ninja",
+      "title": "🥷 Binary Search Ninja",
+      "difficulty": "Intermediate",
+      "category": "Search Algorithms",
+      "prompt": "Master the ninja art of binary search! Find the target 13 in the sorted array [2, 5, 8, 13, 17, 21, 25] and return its index.",
+      "realWorldContext": "Like searching in a phone book, finding a word in a dictionary, or locating data in databases - binary search is lightning fast!",
+      "starter": "; The Way of the Binary Search Ninja!\n; Sorted array: [2, 5, 8, 13, 17, 21, 25]\n; Find target: 13 (should be at index 3)\n\n; Store the sorted array\nMOV R0, #2\nSTORE [9000], R0\nMOV R0, #5\nSTORE [9002], R0\nMOV R0, #8\nSTORE [9004], R0\nMOV R0, #13\nSTORE [9006], R0\nMOV R0, #17\nSTORE [9008], R0\nMOV R0, #21\nSTORE [9010], R0\nMOV R0, #25\nSTORE [9012], R0\n\n; Your ninja technique here\nMOV R1, #13   ; Target value\nMOV R2, #0    ; Left index\nMOV R3, #6    ; Right index\nMOV R0, #-1   ; Result (not found)\n\nHALT",
+      "watches": ["R0", "R1", "R2", "R3", "[9006]"],
+      "maxSteps": 100,
+      "visualization": "binary_search_animation",
+      "asserts": [
+        {
+          "type": "register",
+          "register": "R0",
+          "value": 3,
+          "description": "R0 should contain index 3 (where 13 is found)"
+        }
+      ],
+      "hints": [
+        "Calculate middle = (left + right) / 2",
+        "If middle value equals target, return middle index",
+        "If target < middle, search left half; else search right half"
+      ]
+    },
+    {
+      "id": "fibonacci_sequence",
+      "title": "🌀 Fibonacci Spiral",
+      "difficulty": "Intermediate",
+      "category": "Mathematical Sequences",
+      "prompt": "Generate the mystical Fibonacci sequence! Calculate the 8th Fibonacci number (F(8) = 21) using the golden ratio pattern.",
+      "realWorldContext": "Like modeling population growth, financial markets, or natural patterns - Fibonacci appears everywhere in nature!",
+      "starter": "; The Golden Spiral Mystery!\n; Fibonacci: 0, 1, 1, 2, 3, 5, 8, 13, 21...\n; Calculate F(8) = 21\n\nMOV R0, #0    ; F(n-2)\nMOV R1, #1    ; F(n-1)\nMOV R2, #8    ; Target position\nMOV R3, #2    ; Current position\n\n; Your Fibonacci magic here\n\nHALT",
+      "watches": ["R0", "R1", "R2", "R3"],
+      "maxSteps": 80,
+      "visualization": "fibonacci_generation",
+      "asserts": [
+        {
+          "type": "register",
+          "register": "R1",
+          "value": 21,
+          "description": "R1 should contain F(8) = 21"
+        }
+      ],
+      "hints": [
+        "F(n) = F(n-1) + F(n-2)",
+        "Use R0 and R1 to track previous two values",
+        "Loop until you reach the 8th position"
+      ]
+    },
+    {
+      "id": "palindrome_checker",
+      "title": "🪞 Palindrome Mirror",
+      "difficulty": "Intermediate",
+      "category": "String Algorithms",
+      "prompt": "Create a palindrome detector! Check if the word 'RADAR' reads the same forwards and backwards. Store 1 if palindrome, 0 if not.",
+      "realWorldContext": "Like spell checkers, DNA sequence analysis, or validating symmetric patterns in data processing!",
+      "starter": "; The Palindrome Mirror Challenge!\n; Test word: 'RADAR' (should be palindrome = 1)\n\n; Store 'RADAR'\nMOV R1, #82   ; 'R'\nSTORE [10000], R1\nMOV R1, #65   ; 'A'\nSTORE [10001], R1\nMOV R1, #68   ; 'D'\nSTORE [10002], R1\nMOV R1, #65   ; 'A'\nSTORE [10003], R1\nMOV R1, #82   ; 'R'\nSTORE [10004], R1\nMOV R1, #0    ; null terminator\nSTORE [10005], R1\n\n; Your palindrome detection here\nMOV R0, #1    ; Assume palindrome\nMOV R1, #10000 ; Start pointer\nMOV R2, #10004 ; End pointer\n\nHALT",
+      "watches": ["R0", "R1", "R2", "[10000]", "[10004]"],
+      "maxSteps": 100,
+      "visualization": "palindrome_check",
+      "asserts": [
+        {
+          "type": "register",
+          "register": "R0",
+          "value": 1,
+          "description": "R0 should be 1 (RADAR is a palindrome)"
+        }
+      ],
+      "hints": [
+        "Compare characters from start and end moving inward",
+        "If any pair doesn't match, set result to 0",
+        "Continue until pointers meet in the middle"
+      ]
+    }
+  ],
+  "advanced": [
+    {
+      "id": "recursive_tower",
+      "title": "🗼 Recursive Tower of Power",
+      "difficulty": "Advanced",
+      "category": "Recursion",
+      "prompt": "Build the Tower of Recursion! Calculate 2^5 (32) using recursive multiplication instead of loops. Each call multiplies by 2.",
+      "realWorldContext": "Like calculating compound interest, exponential growth models, or fractal generation - recursion models self-similar patterns!",
+      "starter": "; The Recursive Tower Challenge!\n; Calculate 2^5 = 32 using recursion\n; power(base, exp) = base * power(base, exp-1)\n\nMOV R0, #2    ; Base\nMOV R1, #5    ; Exponent\nCALL power\nHALT\n\npower:\n; Your recursive power function here\n; Base case: if exp = 0, return 1\n; Recursive: return base * power(base, exp-1)\nRET",
+      "watches": ["R0", "R1", "SP", "BP"],
+      "maxSteps": 150,
+      "visualization": "recursion_tree",
+      "asserts": [
+        {
+          "type": "register",
+          "register": "R0",
+          "value": 32,
+          "description": "R0 should contain 2^5 = 32"
+        }
+      ],
+      "hints": [
+        "Base case: if R1 = 0, return 1",
+        "Recursive case: multiply R0 by power(R0, R1-1)",
+        "Use stack to preserve registers across calls"
+      ]
+    },
+    {
+      "id": "linked_list_navigator",
+      "title": "🔗 Linked List Navigator",
+      "difficulty": "Advanced",
+      "category": "Data Structures",
+      "prompt": "Navigate the chain of knowledge! Traverse a linked list representing a quest chain: 100→250→175→300→NULL and sum all the treasure values.",
+      "realWorldContext": "Like browsing history in web browsers, undo/redo systems, or managing playlists - linked lists are fundamental!",
+      "starter": "; The Great Quest Chain Adventure!\n; Chain: 100→250→175→300→NULL (total treasure: 825)\n\n; Node 1: treasure=100, next=11004\nMOV R0, #100\nSTORE [11000], R0\nMOV R0, #11004\nSTORE [11002], R0\n\n; Node 2: treasure=250, next=11008\nMOV R0, #250\nSTORE [11004], R0\nMOV R0, #11008\nSTORE [11006], R0\n\n; Node 3: treasure=175, next=11012\nMOV R0, #175\nSTORE [11008], R0\nMOV R0, #11012\nSTORE [11010], R0\n\n; Node 4: treasure=300, next=NULL\nMOV R0, #300\nSTORE [11012], R0\nMOV R0, #0\nSTORE [11014], R0\n\n; Your navigation algorithm here\nMOV R0, #0     ; Total treasure\nMOV R1, #11000 ; Current node\n\nHALT",
+      "watches": ["R0", "R1", "R2", "[11000]", "[11002]"],
+      "maxSteps": 100,
+      "visualization": "linked_list_traversal",
+      "asserts": [
+        {
+          "type": "register",
+          "register": "R0",
+          "value": 825,
+          "description": "R0 should contain total treasure (100+250+175+300=825)"
+        }
+      ],
+      "hints": [
+        "While current node != NULL: add treasure to total",
+        "Load next pointer from [current+2]",
+        "Continue until next pointer is 0"
+      ]
+    },
+    {
+      "id": "matrix_transformer",
+      "title": "🤖 Matrix Transformer",
+      "difficulty": "Advanced",
+      "category": "Linear Algebra",
+      "prompt": "Transform reality with matrix multiplication! Multiply transformation matrices A=[[2,1],[1,3]] and B=[[1,2],[3,1]] to create the ultimate transformation C.",
+      "realWorldContext": "Like 3D graphics in games, image transformations in photo editing, or neural network computations in AI!",
+      "starter": "; The Matrix Transformation Protocol!\n; A = [[2,1],[1,3]], B = [[1,2],[3,1]]\n; C = A × B = [[5,5],[10,5]]\n\n; Matrix A at 12000\nMOV R0, #2\nSTORE [12000], R0  ; A[0][0]\nMOV R0, #1\nSTORE [12002], R0  ; A[0][1]\nMOV R0, #1\nSTORE [12004], R0  ; A[1][0]\nMOV R0, #3\nSTORE [12006], R0  ; A[1][1]\n\n; Matrix B at 12100\nMOV R0, #1\nSTORE [12100], R0  ; B[0][0]\nMOV R0, #2\nSTORE [12102], R0  ; B[0][1]\nMOV R0, #3\nSTORE [12104], R0  ; B[1][0]\nMOV R0, #1\nSTORE [12106], R0  ; B[1][1]\n\n; Your transformation algorithm here\n; Result matrix C at 12200\n\nHALT",
+      "watches": ["R0", "R1", "R2", "[12200]", "[12202]", "[12204]", "[12206]"],
+      "maxSteps": 200,
+      "visualization": "matrix_multiplication",
+      "asserts": [
+        {
+          "type": "memory",
+          "address": 12200,
+          "value": 5,
+          "description": "C[0][0] should be 5 (2×1 + 1×3)"
+        },
+        {
+          "type": "memory",
+          "address": 12202,
+          "value": 5,
+          "description": "C[0][1] should be 5 (2×2 + 1×1)"
+        },
+        {
+          "type": "memory",
+          "address": 12204,
+          "value": 10,
+          "description": "C[1][0] should be 10 (1×1 + 3×3)"
+        },
+        {
+          "type": "memory",
+          "address": 12206,
+          "value": 5,
+          "description": "C[1][1] should be 5 (1×2 + 3×1)"
+        }
+      ],
+      "hints": [
+        "C[i][j] = Σ(A[i][k] × B[k][j]) for k=0 to 1",
+        "Use nested loops for each result position",
+        "Address calculation: base + (row×2 + col)×2"
+      ]
+    },
+    {
+      "id": "quicksort_master",
+      "title": "⚡ Quicksort Lightning Master",
+      "difficulty": "Advanced",
+      "category": "Advanced Sorting",
+      "prompt": "Unleash the lightning-fast quicksort! Sort the array [7, 2, 9, 1, 5, 3] using the divide-and-conquer technique with recursive partitioning.",
+      "realWorldContext": "Like the sorting used in databases, search engines, and operating systems - quicksort powers the digital world!",
+      "starter": "; The Lightning Quicksort Challenge!\n; Chaos: [7, 2, 9, 1, 5, 3] → Order: [1, 2, 3, 5, 7, 9]\n\n; Store the array\nMOV R0, #7\nSTORE [13000], R0\nMOV R0, #2\nSTORE [13002], R0\nMOV R0, #9\nSTORE [13004], R0\nMOV R0, #1\nSTORE [13006], R0\nMOV R0, #5\nSTORE [13008], R0\nMOV R0, #3\nSTORE [13010], R0\n\n; Your quicksort mastery here\nMOV R0, #0    ; left index\nMOV R1, #5    ; right index\nCALL quicksort\nHALT\n\nquicksort:\n; Your lightning-fast algorithm here\nRET\n\npartition:\n; Your partitioning logic here\nRET",
+      "watches": ["R0", "R1", "R2", "[13000]", "[13002]", "[13010]"],
+      "maxSteps": 300,
+      "visualization": "quicksort_animation",
+      "asserts": [
+        {
+          "type": "memory",
+          "address": 13000,
+          "value": 1,
+          "description": "First element should be 1"
+        },
+        {
+          "type": "memory",
+          "address": 13002,
+          "value": 2,
+          "description": "Second element should be 2"
+        },
+        {
+          "type": "memory",
+          "address": 13004,
+          "value": 3,
+          "description": "Third element should be 3"
+        },
+        {
+          "type": "memory",
+          "address": 13010,
+          "value": 9,
+          "description": "Last element should be 9"
+        }
+      ],
+      "hints": [
+        "Choose last element as pivot",
+        "Partition: elements < pivot on left, > pivot on right",
+        "Recursively sort left and right partitions"
+      ]
+    },
+    {
+      "id": "hash_table_wizard",
+      "title": "🔮 Hash Table Wizard",
+      "difficulty": "Advanced",
+      "category": "Hash Tables",
+      "prompt": "Master the ancient art of hashing! Create a hash table and insert the magic numbers 17, 27, 37 using linear probing to resolve collisions.",
+      "realWorldContext": "Like dictionaries in Python, objects in JavaScript, or database indexing - hash tables power fast lookups everywhere!",
+      "starter": "; The Ancient Hash Table Grimoire!\n; Table size: 10, Hash function: key % 10\n; Insert: 17, 27, 37 (all hash to 7, causing collisions!)\n\n; Initialize hash table to -1 (empty)\nMOV R0, #-1\nMOV R1, #14000\nMOV R2, #10\ninit_loop:\nSTORE [R1], R0\nADD R1, #2\nDEC R2\nJNZ init_loop\n\n; Your hashing wizardry here\n; Insert keys: 17, 27, 37\n\nHALT",
+      "watches": ["R0", "R1", "R2", "[14014]", "[14016]", "[14018]"],
+      "maxSteps": 150,
+      "visualization": "hash_table_operations",
+      "asserts": [
+        {
+          "type": "memory",
+          "address": 14014,
+          "value": 17,
+          "description": "Key 17 should be at index 7 (17%10=7)"
+        },
+        {
+          "type": "memory",
+          "address": 14016,
+          "value": 27,
+          "description": "Key 27 should be at index 8 (collision, probe to 8)"
+        },
+        {
+          "type": "memory",
+          "address": 14018,
+          "value": 37,
+          "description": "Key 37 should be at index 9 (collision, probe to 9)"
+        }
+      ],
+      "hints": [
+        "Hash function: index = key % 10",
+        "If slot occupied, try (index + 1) % 10",
+        "Continue probing until empty slot found"
+      ]
+    },
+    {
+      "id": "expression_calculator",
+      "title": "🧮 Expression Calculator Sage",
+      "difficulty": "Advanced",
+      "category": "Stack Algorithms",
+      "prompt": "Become a calculation sage! Evaluate the postfix expression '5 3 + 2 4 * -' (which equals -3) using stack-based computation.",
+      "realWorldContext": "Like calculators, compilers, and expression parsers - postfix evaluation is how computers process mathematical expressions!",
+      "starter": "; The Sage's Calculation Challenge!\n; Postfix: '5 3 + 2 4 * -' = (5+3) - (2*4) = 8 - 8 = 0\n; Wait... let me recalculate: 5 3 + = 8, then 2 4 * = 8, then 8 - 8 = 0\n; Actually: 5 3 + 2 4 * - means: push 5, push 3, add (=8), push 2, push 4, multiply (=8), subtract (8-8=0)\n; Let's use: 7 2 + 3 * = (7+2)*3 = 27\n\n; Stack operations for: 7 2 + 3 *\nMOV R0, #15000  ; Stack base\nMOV R1, #15000  ; Stack pointer\n\n; Your sage wisdom here\n; Process: 7, 2, +, 3, *\n\nHALT",
+      "watches": ["R0", "R1", "R2", "[15000]", "[15002]"],
+      "maxSteps": 100,
+      "visualization": "stack_evaluation",
+      "asserts": [
+        {
+          "type": "register",
+          "register": "R2",
+          "value": 27,
+          "description": "R2 should contain final result (7+2)*3 = 27"
+        }
+      ],
+      "hints": [
+        "For numbers: push onto stack, increment stack pointer",
+        "For operators: pop two values, compute, push result",
+        "Final result is the only value left on stack"
+      ]
+    },
+    {
+      "id": "graph_traversal",
+      "title": "🗺️ Graph Explorer",
+      "difficulty": "Advanced",
+      "category": "Graph Algorithms",
+      "prompt": "Explore the digital realm! Traverse a graph using depth-first search. Start from node 0 and count all reachable nodes in the connected component.",
+      "realWorldContext": "Like social network analysis, GPS navigation, web crawling, or game AI pathfinding - graphs model connections everywhere!",
+      "starter": "; The Digital Realm Exploration!\n; Graph adjacency list:\n; Node 0: connects to [1, 2]\n; Node 1: connects to [0, 3]\n; Node 2: connects to [0, 3]\n; Node 3: connects to [1, 2]\n; Expected reachable nodes: 4 (all nodes)\n\n; Adjacency matrix at 16000 (4x4, 1=connected, 0=not)\n; Row 0: [0,1,1,0]\nMOV R0, #0\nSTORE [16000], R0\nMOV R0, #1\nSTORE [16002], R0\nSTORE [16004], R0\nMOV R0, #0\nSTORE [16006], R0\n\n; Row 1: [1,0,0,1]\nMOV R0, #1\nSTORE [16008], R0\nMOV R0, #0\nSTORE [16010], R0\nSTORE [16012], R0\nMOV R0, #1\nSTORE [16014], R0\n\n; Row 2: [1,0,0,1]\nMOV R0, #1\nSTORE [16016], R0\nMOV R0, #0\nSTORE [16018], R0\nSTORE [16020], R0\nMOV R0, #1\nSTORE [16022], R0\n\n; Row 3: [0,1,1,0]\nMOV R0, #0\nSTORE [16024], R0\nMOV R0, #1\nSTORE [16026], R0\nSTORE [16028], R0\nMOV R0, #0\nSTORE [16030], R0\n\n; Your exploration algorithm here\nMOV R0, #0  ; Start node\nMOV R1, #0  ; Visited count\n\nHALT",
+      "watches": ["R0", "R1", "R2", "[16000]", "[16002]"],
+      "maxSteps": 200,
+      "visualization": "graph_traversal",
+      "asserts": [
+        {
+          "type": "register",
+          "register": "R1",
+          "value": 4,
+          "description": "R1 should contain count of reachable nodes (4)"
+        }
+      ],
+      "hints": [
+        "Use a visited array to track explored nodes",
+        "For each unvisited neighbor, recursively explore",
+        "Count each node as you visit it"
+      ]
+    }
+  ],
+  "expert": [
+    {
+      "id": "compiler_optimizer",
+      "title": "⚙️ Compiler Optimization Guru",
+      "difficulty": "Expert",
+      "category": "Optimization",
+      "prompt": "Become a compiler optimization master! Optimize the expression 'x*12 + x*4' to 'x*16' using bit shifts. Given x=5, compute efficiently.",
+      "realWorldContext": "Like the optimizations in GCC, LLVM, or V8 JavaScript engine - making code run faster through clever transformations!",
+      "starter": "; The Optimization Master Challenge!\n; Optimize: x*12 + x*4 = x*16 = x << 4\n; Given x = 5, result should be 80\n; But let's be clever: x*12 = x*8 + x*4 = (x<<3) + (x<<2)\n; So: x*12 + x*4 = (x<<3) + (x<<2) + (x<<2) = (x<<3) + 2*(x<<2)\n; Or simply: x*16 = x << 4\n\nMOV R0, #5    ; x = 5\n\n; Your optimization mastery here\n; Calculate x*16 = 80 using only shifts and adds\n\nHALT",
+      "watches": ["R0", "R1", "R2"],
+      "maxSteps": 20,
+      "visualization": "optimization_steps",
+      "asserts": [
+        {
+          "type": "register",
+          "register": "R1",
+          "value": 80,
+          "description": "R1 should contain optimized result (5*16=80)"
+        }
+      ],
+      "hints": [
+        "x*16 = x << 4 (left shift by 4 positions)",
+        "This is much faster than multiplication",
+        "Use SHL R1, #4 after copying x to R1"
+      ]
+    },
+    {
+      "id": "memory_allocator_architect",
+      "title": "🏗️ Memory Allocator Architect",
+      "difficulty": "Expert",
+      "category": "Memory Management",
+      "prompt": "Design a memory management system! Implement a heap allocator that can allocate 32 bytes from a 128-byte heap with proper block headers.",
+      "realWorldContext": "Like malloc() in C, new in C++, or garbage collectors in Java/Python - memory management is the foundation of all software!",
+      "starter": "; The Memory Architecture Challenge!\n; Heap: 128 bytes starting at 17000\n; Block format: [size:2][free_flag:2][data...]\n; Initialize with one large free block\n\nMOV R0, #124  ; Available size (128 - 4 for header)\nSTORE [17000], R0\nMOV R0, #1    ; Free flag\nSTORE [17002], R0\n\n; Your memory architecture here\n; Allocate 32 bytes and return pointer to data area\nMOV R1, #32\nCALL allocate\n\nHALT\n\nallocate:\n; Your allocation algorithm here\n; Input: R1 = requested size\n; Output: R0 = pointer to allocated data (or 0 if failed)\nRET",
+      "watches": ["R0", "R1", "R2", "[17000]", "[17002]"],
+      "maxSteps": 100,
+      "visualization": "memory_allocation",
+      "asserts": [
+        {
+          "type": "register",
+          "register": "R0",
+          "value": 17004,
+          "description": "R0 should point to data area (17004)"
+        },
+        {
+          "type": "memory",
+          "address": 17000,
+          "value": 32,
+          "description": "Allocated block size should be 32"
+        },
+        {
+          "type": "memory",
+          "address": 17002,
+          "value": 0,
+          "description": "Block should be marked as allocated (0)"
+        }
+      ],
+      "hints": [
+        "Find first free block with size >= requested",
+        "Split block if much larger than needed",
+        "Return pointer to data area (header + 4)"
+      ]
+    },
+    {
+      "id": "garbage_collector_sage",
+      "title": "♻️ Garbage Collector Sage",
+      "difficulty": "Expert",
+      "category": "Garbage Collection",
+      "prompt": "Master the art of automatic memory management! Implement mark-and-sweep garbage collection for objects with reference chains.",
+      "realWorldContext": "Like the garbage collectors in Java, C#, Python, and JavaScript - automatic memory management that powers modern languages!",
+      "starter": "; The Garbage Collection Mastery!\n; Object format: [mark_bit:2][size:2][data...]\n\n; Object A at 18000: size=6, contains reference to B\nMOV R0, #0    ; mark bit\nSTORE [18000], R0\nMOV R0, #6    ; size\nSTORE [18002], R0\nMOV R0, #18008 ; reference to object B\nSTORE [18004], R0\n\n; Object B at 18008: size=4, leaf object\nMOV R0, #0    ; mark bit\nSTORE [18008], R0\nMOV R0, #4    ; size\nSTORE [18010], R0\nMOV R0, #100  ; data\nSTORE [18012], R0\n\n; Object C at 18016: size=4, unreferenced\nMOV R0, #0    ; mark bit\nSTORE [18016], R0\nMOV R0, #4    ; size\nSTORE [18018], R0\nMOV R0, #200  ; data\nSTORE [18020], R0\n\n; Root points to object A\nMOV R0, #18000\nSTORE [19000], R0\n\n; Your garbage collection mastery here\nCALL mark_phase\nCALL sweep_phase\nHALT\n\nmark_phase:\n; Mark all reachable objects starting from roots\nRET\n\nsweep_phase:\n; Free all unmarked objects\nRET",
+      "watches": ["R0", "R1", "[18000]", "[18008]", "[18016]"],
+      "maxSteps": 150,
+      "visualization": "garbage_collection",
+      "asserts": [
+        {
+          "type": "memory",
+          "address": 18000,
+          "value": 1,
+          "description": "Object A should be marked (reachable from root)"
+        },
+        {
+          "type": "memory",
+          "address": 18008,
+          "value": 1,
+          "description": "Object B should be marked (referenced by A)"
+        },
+        {
+          "type": "memory",
+          "address": 18016,
+          "value": 0,
+          "description": "Object C should remain unmarked (unreachable)"
+        }
+      ],
+      "hints": [
+        "Mark phase: recursively mark objects reachable from roots",
+        "Follow references in object data to find connected objects",
+        "Sweep phase: scan heap and free unmarked objects"
+      ]
+    }
+  ],
+  "expert": [
+    {
+      "id": "neural_network_node",
+      "title": "🧠 Neural Network Node",
+      "difficulty": "Expert",
+      "category": "Machine Learning",
+      "prompt": "Build an AI neuron! Implement a perceptron that computes weighted sum of inputs [2, 3, 1] with weights [0.5, 0.3, 0.2] plus bias 0.1.",
+      "realWorldContext": "Like the neurons in ChatGPT, image recognition, and all modern AI - you're building the fundamental unit of artificial intelligence!",
+      "starter": "; The AI Neuron Challenge!\n; Inputs: [2, 3, 1], Weights: [0.5, 0.3, 0.2], Bias: 0.1\n; Output = (2*0.5 + 3*0.3 + 1*0.2) + 0.1 = 2.0\n; Using fixed-point arithmetic (multiply by 10 for decimals)\n\n; Inputs (×10): [20, 30, 10]\nMOV R0, #20\nSTORE [20000], R0\nMOV R0, #30\nSTORE [20002], R0\nMOV R0, #10\nSTORE [20004], R0\n\n; Weights (×10): [5, 3, 2]\nMOV R0, #5\nSTORE [20100], R0\nMOV R0, #3\nSTORE [20102], R0\nMOV R0, #2\nSTORE [20104], R0\n\n; Bias (×10): 1\nMOV R3, #1\n\n; Your neural network here\n; Expected result: 20 (representing 2.0)\n\nHALT",
+      "watches": ["R0", "R1", "R2", "R3"],
+      "maxSteps": 80,
+      "visualization": "neural_computation",
+      "asserts": [
+        {
+          "type": "register",
+          "register": "R0",
+          "value": 20,
+          "description": "R0 should contain result 20 (representing 2.0)"
+        }
+      ],
+      "hints": [
+        "Multiply each input by its weight",
+        "Sum all weighted inputs",
+        "Add bias and divide by 10 to get final result"
+      ]
+    },
+    {
+      "id": "crypto_cipher",
+      "title": "🔐 Cryptographic Cipher Master",
+      "difficulty": "Expert",
+      "category": "Cryptography",
+      "prompt": "Become a cryptography master! Implement a Vigenère cipher to encrypt 'HELLO' with key 'KEY', producing the encrypted result.",
+      "realWorldContext": "Like the encryption protecting your online banking, messaging apps, and secure communications - cryptography secures the digital world!",
+      "starter": "; The Cryptographic Mastery Challenge!\n; Encrypt 'HELLO' with key 'KEY'\n; H+K=R, E+E=I, L+Y=J, L+K=V, O+E=S → 'RIJVS'\n\n; Store plaintext 'HELLO'\nMOV R0, #72   ; 'H'\nSTORE [21000], R0\nMOV R0, #69   ; 'E'\nSTORE [21001], R0\nMOV R0, #76   ; 'L'\nSTORE [21002], R0\nMOV R0, #76   ; 'L'\nSTORE [21003], R0\nMOV R0, #79   ; 'O'\nSTORE [21004], R0\n\n; Store key 'KEY'\nMOV R0, #75   ; 'K'\nSTORE [21100], R0\nMOV R0, #69   ; 'E'\nSTORE [21101], R0\nMOV R0, #89   ; 'Y'\nSTORE [21102], R0\n\n; Your cryptographic mastery here\n; Encrypt to address 21200\n\nHALT",
+      "watches": ["R0", "R1", "R2", "[21200]", "[21201]"],
+      "maxSteps": 120,
+      "visualization": "cipher_encryption",
+      "asserts": [
+        {
+          "type": "memory",
+          "address": 21200,
+          "value": 82,
+          "description": "First encrypted char should be 'R' (82)"
+        },
+        {
+          "type": "memory",
+          "address": 21201,
+          "value": 73,
+          "description": "Second encrypted char should be 'I' (73)"
+        },
+        {
+          "type": "memory",
+          "address": 21204,
+          "value": 83,
+          "description": "Last encrypted char should be 'S' (83)"
+        }
+      ],
+      "hints": [
+        "For each char: (plaintext + key - 2*'A') mod 26 + 'A'",
+        "Use key cyclically: KEY, KEY, KEY...",
+        "Handle wraparound with modulo arithmetic"
+      ]
+    },
+    {
+      "id": "mystery_box_ultimate",
+      "title": "🎁 THE MYSTERY BOX - Ultimate Challenge",
+      "difficulty": "Expert",
+      "category": "Multi-Concept Integration",
+      "prompt": "🌟 CONGRATULATIONS! You've reached the legendary Mystery Box! This ultimate challenge combines EVERYTHING you've learned. The box contains a secret algorithm that processes dynamic input. Can you decode its mysteries and implement the ultimate solution?",
+      "realWorldContext": "Like the final boss in a video game, the capstone project in computer science, or the ultimate coding interview - this is where legends are made!",
+      "starter": "; 🎁 THE LEGENDARY MYSTERY BOX 🎁\n; \n; MISSION: The Mystery Box Algorithm\n; \n; You are given a magical sequence that follows these rules:\n; 1. Start with the Fibonacci sequence: 1, 1, 2, 3, 5, 8...\n; 2. For each Fibonacci number F(n):\n;    - If F(n) is even: store F(n) * 2 at memory[22000 + n*2]\n;    - If F(n) is odd: store F(n) + 10 at memory[22000 + n*2]\n; 3. Calculate the sum of the first 6 transformed values\n; 4. Apply Caesar cipher (shift +3) to the result if > 100\n; 5. Store final result in R0\n;\n; Expected sequence: F(1)=1→11, F(2)=1→11, F(3)=2→4, F(4)=3→13, F(5)=5→15, F(6)=8→16\n; Sum: 11+11+4+13+15+16 = 70\n; Since 70 < 100, no cipher needed\n; Final result: 70\n\n; Your legendary algorithm here\n; Combine: Fibonacci + Conditionals + Arrays + Arithmetic + Cryptography\n\nMOV R0, #0    ; Final result\nMOV R1, #1    ; F(n-1)\nMOV R2, #1    ; F(n)\nMOV R3, #22000 ; Memory base\nMOV R4, #6    ; Count\nMOV R5, #0    ; Sum accumulator\n\n; 🎯 Your mastery of ALL concepts here!\n\nHALT",
+      "watches": ["R0", "R1", "R2", "R3", "R4", "R5", "[22000]", "[22002]", "[22010]"],
+      "maxSteps": 300,
+      "visualization": "mystery_box_algorithm",
+      "interactiveInput": true,
+      "dynamicTests": true,
+      "asserts": [
+        {
+          "type": "register",
+          "register": "R0",
+          "value": 70,
+          "description": "R0 should contain the mystery result (70)"
+        },
+        {
+          "type": "memory",
+          "address": 22000,
+          "value": 11,
+          "description": "First transformed value: 1+10=11"
+        },
+        {
+          "type": "memory",
+          "address": 22002,
+          "value": 11,
+          "description": "Second transformed value: 1+10=11"
+        },
+        {
+          "type": "memory",
+          "address": 22004,
+          "value": 4,
+          "description": "Third transformed value: 2*2=4"
+        },
+        {
+          "type": "memory",
+          "address": 22010,
+          "value": 16,
+          "description": "Sixth transformed value: 8*2=16"
+        }
+      ],
+      "goldStandardSolution": "; 🏆 GOLD STANDARD SOLUTION - Revealed after completion!\n; This is how a master would solve it:\n\nMOV R0, #0\nMOV R1, #1\nMOV R2, #1\nMOV R3, #22000\nMOV R4, #6\nMOV R5, #0\n\nfib_loop:\nMOV R6, R2\nAND R6, #1\nJNZ odd_case\nMOV R6, R2\nMUL R6, #2\nJMP store_value\nodd_case:\nMOV R6, R2\nADD R6, #10\nstore_value:\nSTORE [R3], R6\nADD R5, R6\nADD R3, #2\nMOV R7, R2\nADD R2, R1\nMOV R1, R7\nDEC R4\nJNZ fib_loop\nCMP R5, #100\nJLE no_cipher\nADD R5, #3\nno_cipher:\nMOV R0, R5\nHALT",
+      "hints": [
+        "🔥 LEGENDARY HINTS:",
+        "Combine Fibonacci generation with conditional processing",
+        "Use bitwise AND to check if number is odd/even",
+        "Store transformed values and accumulate sum",
+        "Apply Caesar cipher only if sum exceeds threshold",
+        "This tests EVERY concept from all 23 previous challenges!"
+      ],
+      "completionMessage": "🎉 LEGENDARY STATUS ACHIEVED! 🎉\n\nYou have conquered the Mystery Box and mastered the art of assembly programming! You've demonstrated expertise in:\n\n✨ Arithmetic & Logic\n✨ Memory Management\n✨ Control Flow & Loops\n✨ Recursion & Functions\n✨ Data Structures\n✨ Algorithms & Optimization\n✨ Cryptography & Security\n✨ Advanced Problem Solving\n\nYou are now a true Assembly Wizard! 🧙‍♂️✨"
+    }
+  ]
+}

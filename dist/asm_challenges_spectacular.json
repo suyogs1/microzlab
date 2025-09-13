@@ -1,0 +1,58 @@
+{
+  "metadata": {
+    "version": "2.0",
+    "title": "MicroZ Assembly Challenges - Spectacular Edition",
+    "description": "24 mind-blowing coding challenges with advanced grading, visualizations, and magical features",
+    "totalChallenges": 24,
+    "difficultyLevels": ["Beginner", "Intermediate", "Advanced", "Expert"],
+    "features": ["Auto-grading", "Debugger Integration", "Algorithm Visualization", "Interactive Testing", "Badge System"]
+  },
+  
+  "gradingCriteria": {
+    "correctness": { "weight": 60, "description": "Solution produces correct output" },
+    "efficiency": { "weight": 20, "description": "Optimal time/space complexity" },
+    "codeStyle": { "weight": 20, "description": "Clean, readable, well-commented code" }
+  },
+  
+  "badges": {
+    "speedster": { "name": "Speed Demon", "description": "Solve 5 challenges in under 2 minutes each", "icon": "⚡" },
+    "perfectionist": { "name": "Perfectionist", "description": "Get 100% score on 10 challenges", "icon": "💎" },
+    "streak": { "name": "Hot Streak", "description": "Solve 5 challenges in a row without errors", "icon": "🔥" },
+    "optimizer": { "name": "Code Optimizer", "description": "Beat efficiency benchmarks on 8 challenges", "icon": "🚀" },
+    "debugger": { "name": "Debug Master", "description": "Use debugger features in 15 challenges", "icon": "🔍" },
+    "explorer": { "name": "Algorithm Explorer", "description": "Complete all visualization challenges", "icon": "🗺️" },
+    "champion": { "name": "Assembly Champion", "description": "Complete all 24 challenges with 90%+ average", "icon": "👑" }
+  },
+
+  "beginner": [
+    {
+      "id": "basic_arithmetic",
+      "title": "🧮 Calculator Basics",
+      "difficulty": "Beginner", 
+      "category": "Arithmetic",
+      "description": "Build a simple calculator! Add two numbers (15 + 27) and store the result. Then multiply by 2.",
+      "realWorldContext": "Like building the core of a calculator app - every computation starts with basic arithmetic!",
+      "starter": "; Let's do some math!\n; Calculate: (15 + 27) * 2 = 84\n\nMOV R0, #15    ; First number\nMOV R1, #27    ; Second number\n\n; Your calculation here\n\nHALT",
+      "watches": ["R0", "R1", "R2"],
+      "maxSteps": 20,
+      "visualization": "arithmetic_operations",
+      "asserts": [
+        {
+          "type": "register",
+          "register": "R2",
+          "value": 84,
+          "description": "Final result should be 84"
+        }
+      ],
+      "hints": [
+        "First add R0 and R1, store in R2",
+        "Then multiply R2 by 2",
+        "Use ADD and MUL instructions"
+      ]
+    }
+  ],
+  
+  "intermediate": [],
+  "advanced": [],
+  "expert": []
+}
