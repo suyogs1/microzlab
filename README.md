@@ -96,15 +96,6 @@ MicroZ Lab is an interactive web-based platform for learning assembly programmin
 - **Indirect**: `[R0]` - Memory at address in register
 - **Indexed**: `[R0+4]`, `[label+offset]` - Base + offset
 
-### Directives
-- `.DATA` - Start data section (base 0x8000)
-- `.TEXT` - Start code section (base 0x0000)
-- `.ORG addr` - Set section origin address
-- `.WORD expr, ...` - Define 16-bit words
-- `.BYTE expr, ...` - Define 8-bit bytes
-- `.ASCII "text"` - Define string without null terminator
-- `.ASCIZ "text"` - Define null-terminated string
-- `.ALIGN n` - Align to power-of-2 boundary
 
 ### Number Formats
 - **Decimal**: `123`
