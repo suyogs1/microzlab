@@ -158,25 +158,23 @@ SYS #3    ; Exit with code in R0
 
 #### Memory Layout
 - **TEXT Section**: 0x0000-0x7FFF (code and instructions)
-- **DATA Section**: 0x8000-0xFFFF (variables and constants)
-- **Stack**: Grows downward from 0xFFFC
 
 ### Example Debugging Session
 
 ```assembly
 .TEXT
 main:
-    MOV R0, #42        ; Set breakpoint here (F9)
-    MOV R1, R0         ; Step into (F11)
+    MOV R0, #42        
+    MOV R1, R0         
     
-    ADD R1, #10        ; Add watch: R1 - watch it change from 42 to 52
+    ADD R1, #10        
     
-    MOV R0, R1         ; Step over (F10)
-    SYS #1             ; Prints 52
+    MOV R0, R1         
+    SYS #1            
     
-    MOV R0, #0         ; Exit code
-    SYS #3             ; Exit program
-    HLT                ; Program halts
+    MOV R0, #0        
+    SYS #3             
+    HLT             
 ```
 
 **Debugging Steps:**
@@ -203,14 +201,6 @@ The debugger provides detailed error information with:
 - Syntax highlighting for problematic code
 
 ### Quick Reference
-
-**Keyboard Shortcuts:**
-- `F9` - Toggle breakpoint on current line
-- `F10` - Step over (execute current line)
-- `F11` - Step into (enter function calls)
-- `Shift+F11` - Step out (exit current function)
-- `Ctrl+Enter` - Run program
-- `Ctrl+B` - Focus registers panel
 
 **Watch Expression Examples:**
 - `R0` - Register R0 value
