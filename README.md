@@ -114,33 +114,7 @@ MicroZ Lab is an interactive web-based platform for learning assembly programmin
 
 ### Debugger Commands & Features
 
-#### Execution Control
-```
-Run (Ctrl+Enter)     - Execute until breakpoint or halt
-Step Over (F10)      - Execute current line, skip function calls
-Step Into (F11)      - Execute current line, enter function calls  
-Step Out (Shift+F11) - Execute until return from current function
-Reset                - Reset CPU and memory to initial state
-Pause                - Stop execution (when running)
-```
 
-#### Breakpoint Management
-```
-Toggle (F9)          - Set/remove breakpoint on current line
-Click Gutter         - Set/remove breakpoint by clicking line number area
-Smart Snapping       - Breakpoints automatically move to executable lines
-Visual Feedback      - Toast notification when breakpoint location changes
-```
-
-#### Panel Navigation
-```
-Registers (Ctrl+B)   - View R0-R15, SP, BP, IP, and CPU flags
-Memory               - Inspect RAM contents in hex/decimal format
-Watches              - Monitor expressions: R0, [1000], [label_name]
-Console              - View system call output and program messages
-Trace                - See execution history and instruction flow
-Performance          - Control execution speed and batch size
-```
 
 #### Watch Expressions
 Add expressions to monitor values during execution:
