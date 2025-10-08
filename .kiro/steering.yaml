@@ -1,0 +1,51 @@
+# Steering file: defines flows and how specs + hooks are used
+version: 1
+project: microzlab
+
+defaults:
+  spec: specs/app.yaml
+
+env:
+  CI: "true"
+
+flows:
+  # Run on CI (push/PR)
+  - name: ci
+    triggers: [push, pull_request]
+    use_spec: specs/app.yaml
+    before_hooks:
+      - hooks/ci-setup.sh
+    steps:
+      - run: npm ci
+      - run: npm run lint
+      - run: npm test -- --ci
+    artifacts:
+      - path: dist/**
+
+  # Local developer checks
+  - name: dev-check
+    triggers: [manual]
+    use_spec: specs/app.yaml
+    steps:
+      - run: npm run typecheck
+      - run: npm run lint
+
+  # Build + package
+  - name: release
+    triggers: [tag]
+    use_spec: specs/app.yaml
+    before_hooks:
+      - hooks/ci-setup.sh
+    steps:
+      - run: npm ci
+      - run: npm run build
+      - run: node -e "console.log('Packaging…');"
+
+  # API service pipeline
+  - name: api-ci
+    triggers: [push]
+    use_spec: specs/api.yaml
+    steps:
+      - run: python -m pip install -U pip
+      - run: pip install -r requirements.txt
+      - run: pytest -q
