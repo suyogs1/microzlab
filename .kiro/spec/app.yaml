@@ -1,0 +1,23 @@
+# Application spec (Node/TypeScript example)
+version: 1
+name: microzlab-app
+
+runtime:
+  language: node
+  version: "18"
+
+workspace:
+  entry: npm run dev
+  ports: [3000]
+  env:
+    NODE_ENV: development
+
+ci:
+  install: npm ci
+  lint: npm run lint
+  test: npm test
+  build: npm run build
+
+artifacts:
+  - dist/**
+  - coverage/**
