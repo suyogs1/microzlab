@@ -1,0 +1,7 @@
+# Declarative build steps
+version: 1
+name: build
+
+steps:
+  - run: npm ci
+  - run: npm run build

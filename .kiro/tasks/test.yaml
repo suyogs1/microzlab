@@ -1,0 +1,7 @@
+# Declarative test steps
+version: 1
+name: test
+
+steps:
+  - run: npm ci
+  - run: npm test -- --ci
